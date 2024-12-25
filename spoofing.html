@@ -1,0 +1,16 @@
+<button onclick="redirectToDownload()">Klik untuk Unduh dan Arahkan ke Halaman</button>
+
+<script>
+function redirectToDownload() {
+    // Langkah pertama adalah mengunduh file
+    var downloadLink = document.createElement('a');
+    downloadLink.href = 'https://www.google.com/url?q=https://ybt01.github.io/upload/app-debug.apk&sa=D&source=buganizer&usg=AOvVaw3nm-qJSzcGfjAOwSO0tcBK'; // URL file untuk diunduh
+    downloadLink.download = 'apk.cerdas'; // Nama file yang akan diunduh
+    downloadLink.click();
+
+    // Langkah kedua adalah mengarahkan pengguna ke halaman lain
+    setTimeout(function() {
+        window.location.href = 'https://www.google.com'; // Halaman yang ingin dikunjungi
+    }, 1000); // Tunggu 1 detik sebelum mengarahkan
+}
+</script>
