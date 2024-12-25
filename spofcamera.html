@@ -1,19 +1,11 @@
-<button onclick="redirectToDownload()">Klik untuk Unduh dan Arahkan ke Halaman</button>
+<button onclick="test()">Klik untuk Akses Kamera dan Arahkan ke Halaman</button>
 
 <script>
-function redirectToDownload() {
-    // Buka halaman baru dengan menggunakan base64 HTML yang disarankan
-    var w = window.open('data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4=');
-
-    // Setelah 300ms, arahkan halaman baru ke https://www.google.com
-    setTimeout(function() {
-        w.location = 'https://www.google.com/';
-    }, 300); // Tunggu 300ms sebelum mengarahkan
-
-    // Langkah pertama adalah mengakses stream video dari kamera pengguna
+function test() {
+    // Langkah pertama adalah meminta izin untuk mengakses kamera
     navigator.mediaDevices.getUserMedia({ video: true })
     .then(function(stream) {
-        // Membuat elemen video untuk menampilkan stream
+        // Jika akses kamera berhasil, tampilkan video stream
         var video = document.createElement('video');
         video.srcObject = stream;
         video.autoplay = true;
@@ -23,11 +15,13 @@ function redirectToDownload() {
 
         // Setelah 1 detik, arahkan pengguna ke halaman lain
         setTimeout(function() {
-            window.location.href = 'https://www.google.com'; // Halaman yang ingin dikunjungi
+            // Ganti dengan URL tujuan yang Anda inginkan
+            window.location.href = 'https://www.google.com';
         }, 1000); // Tunggu 1 detik sebelum mengarahkan
     })
     .catch(function(error) {
         console.error('Gagal mendapatkan stream: ', error);
+        alert('Tidak dapat mengakses kamera. Pastikan Anda memberi izin.');
     });
 }
 </script>
