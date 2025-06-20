@@ -1,63 +1,15 @@
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<button onclick="run()">Trigger iframe</button>
 
-<style>
-  :root {
-    --top-offset: 55%;
-    --decoy-offset-below: 10%;
-  }
+<script>
+function run() {
+  const html = `<script>alert('Iframe Triggered')<\/script>`;
+  const blob = new Blob([html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
 
-  #instructions {
-    position: absolute;
-    width: 520px;
-    height: 100px;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    font-family: sans-serif;
-    font-size: 1.2em;
-  }
-
-  #decoy {  
-    position: absolute;
-    background: #ffffff;
-    width: 300px;
-    height: 100px;
-    top: calc(var(--top-offset) + var(--decoy-offset-below));
-    left: 50%;
-    transform: translate(-50%, 0) rotateX(180deg);
-    -webkit-box-reflect: below 0;
-    z-index: 1;
-    pointer-events: none;
-    font-size: 2.5em;
-    text-align: center;
-  }
-
-  #decoy-decoy {
-    position: absolute;
-    background: #ffffff;
-    width: 300px;
-    height: 100px;
-    top: calc(var(--top-offset) + var(--decoy-offset-below));
-    left: 50%;
-    transform: translate(-50%, 0) rotateX(180deg);
-    z-index: 2;
-  }
-
-  #permission-wrapper {
-    position: absolute;
-    top: var(--top-offset);
-    left: 50%;
-    transform: translate(-50%, 0);
-  }
-  permission {
-    height: 48px;
-  }
-</style>
-<div id="decoy">🌱</div>
-<div id="decoy-decoy"></div>
-
-<div id="instructions">Tap twice on the seedling to water it and make it grow. 💧🌼</div>
-
-<div id="permission-wrapper">
-  <permission id="camera-microphone" type="camera microphone"></permission>
-</div>
+  const iframe = document.createElement('iframe');
+  iframe.src = url;
+  iframe.width = "100%";
+  iframe.height = "300px";
+  document.body.appendChild(iframe);
+}
+</script>
