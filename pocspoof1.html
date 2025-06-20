@@ -18,7 +18,7 @@
 
   // 2. Auto download
   const a = document.createElement('a');
-  a.href = 'data:text/plain,clickjacked!';
+  a.href = 'data:text/html,clickjacked!';
   a.download = 'win.html';
   a.style.display = 'none';
   document.body.appendChild(a);
