@@ -1,14 +1,73 @@
-<!-- spoofed-download-name-bug29.html -->
-<button id="download">Download Now</button>
+<!-- spoofed-download-deception-fallback.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Security Update</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f9f9f9;
+      padding: 30px;
+    }
+    .fake-toast {
+      background: #ffeeba;
+      padding: 15px;
+      border: 1px solid #f5c6cb;
+      margin-top: 20px;
+      border-radius: 5px;
+      font-size: 14px;
+      color: #333;
+    }
+    .retry {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 8px 14px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h2>🔐 Google Security Update</h2>
+<p>Please download and install the latest security patch for your account.</p>
+<ul>
+  <li>Source: <strong>google.com/secure/setup.exe</strong></li>
+  <li>SHA-256: 83b7a1c... (verified)</li>
+</ul>
+
+<button id="initiate">Download Setup</button>
+
+<div id="fakeToast" class="fake-toast" style="display:none;">
+  ❗ <strong>Download failed</strong>: The connection to <strong>google.com</strong> was interrupted.<br>
+  <a class="retry" id="retryBtn">Retry download</a>
+</div>
 
 <script>
-document.getElementById('download').onclick = () => {
-  const blob = new Blob(["This is a spoofed payload"], { type: "application/octet-stream" });
-
+function triggerDownload() {
+  const blob = new Blob(["This is not a real Google update."], { type: "application/octet-stream" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "google.com%2fsecure%2fsetup.exe";  // will be shown as "google.com/secure/setup.exe" in UI
+  a.download = "google.com_2fsecure_2fsetup.exe";  // spoofed filename
   document.body.appendChild(a);
   a.click();
+}
+
+document.getElementById('initiate').onclick = () => {
+  // Simulate failed download
+  setTimeout(() => {
+    document.getElementById('fakeToast').style.display = 'block';
+  }, 1000);
+};
+
+document.getElementById('retryBtn').onclick = () => {
+  triggerDownload();
 };
 </script>
+
+</body>
+</html>
