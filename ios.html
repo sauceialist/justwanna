@@ -36,7 +36,7 @@
       const a = document.createElement("a");
       // Tricky filename: %2e is URL-encoded dot → becomes "report%2etxt"
       // but Chrome iOS UI might display "report.txt"
-      a.download = "reports.pdf";
+      a.download = "secure_document_______________.pdf.exe";
       a.href = blobUrl;
       document.body.appendChild(a);
       a.click();
