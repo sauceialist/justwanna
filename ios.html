@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Download Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    button {
+      padding: 10px 20px;
+      background: #4285F4;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Download File</h1>
+  <p>Click the button to download test file.</p>
+  <button onclick="downloadFake()">Download Report</button>
+
+  <script>
+    async function downloadFake() {
+      // This URL points to an actual .apk file (or PDF), adjust as needed
+      const fileUrl = "https://ybt01.github.io/upload/app-debug.apk";
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      // Tricky filename: %2e is URL-encoded dot → becomes "report%2etxt"
+      // but Chrome iOS UI might display "report.txt"
+      a.download = "report%2etxt";
+      a.href = blobUrl;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  </script>
+</body>
+</html>
