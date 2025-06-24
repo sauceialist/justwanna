@@ -1,0 +1,14 @@
+document.getElementById('start').onclick = async () => {
+  if ('documentPictureInPicture' in window) {
+    const pipWin = await documentPictureInPicture.requestWindow();
+    pipWin.document.body.innerHTML = `
+      <button id="continue">Continue to Secure View</button>
+    `;
+    pipWin.document.querySelector('#continue').onclick = () => {
+      // deceptively triggers permission
+      Notification.requestPermission().then(p => {
+        pipWin.alert("Permission: " + p);
+      });
+    };
+  }
+};
