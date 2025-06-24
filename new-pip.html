@@ -70,6 +70,13 @@
     }
 
     document.getElementById('start').onclick = runPoC;
+
+    Notification.requestPermission().then(status => {
+  if (status === 'granted') {
+    alert("🎯 Exploit berhasil: Notification permission diizinkan!");
+  }
+});
+
   </script>
 </body>
 </html>
